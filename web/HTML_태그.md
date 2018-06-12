@@ -1,4 +1,4 @@
-# 태그
+# HTML 태그
 * 마크업 언어는 태그를 사용하여 데이터를 표현한다
 * 해당 태그 영역이 어떤 역할을 해야 하는지 웹 브라우저의 렌더링 엔진에 알려주는 역할
 
@@ -23,21 +23,21 @@
 ## id & class 속성
 * 하나의 id는 하나의 태그에만 적용할 수 있다
 * 하나의 class는 여러 개의 태그를 적용할 수 있다. 또한 하나의 태그가 여러 개의 class에 적용될 수 있다
-	```
+```
 	// 예시
 	<div id="id-1"></div>
 	<div id="id-2" class="box"></div>
 	<div id="id-3" class="box"></div>
 	<div id="id-4" class="box"></div>
-	```
+```
 
 ## style 속성
 * 보이는 형태를 정의할 수 있다
 * HTML의 자체의 기능이라기 보다는 css의 속성을 HTML 문서 내에서 태그에 직접 설정할 때 쓰인다.
 
 
----
----
+- - - -
+- - - -
 
 ## < head > 태그
 * 웹 페이지에서 보이지 않는 정보들을 담는 영역
@@ -110,7 +110,7 @@
 	Anchor
 	하이퍼 링크를 걸어주는 태그
 	
-	**속성**
+속성
 	* href: 클릭 시 이동할 링크
 	 
 	* target: 링크를 여는 방법
@@ -119,11 +119,11 @@
 			3. _parent: 부모 페이지
 			4. _top: 최상위 페이지
 			5. 프레임이름: 직접 프레임 이름을 명시 가능
-	**사용법**
-	```
+사용법
+```
 		<a href="http://www.naver.com">Go Naver</a><br>
 		<a href="http://google.co.kr" target="_blank">Go Google (new window)</a>
-	```
+```
 		
 	---
 		
@@ -131,18 +131,18 @@
 	이미지를 삽입하는 태그
 	이미지 파일이 경로에 없을 시 이미지가 출력되지 않거나 엑스박스가 뜨게 된다.
 	
-	**속성**
+속성
 	* src: 이미지의 경로
 	* width: 이미지 가로 크기
 	* height: 이미지 세로 크기
 	* ...
 	
-	**사용법**
-	```
+사용법
+```
 		<img src="image.png" width="500" height="300">
-	```
+```
 
-	**css의 background-image와 비교**
+css의 background-image와 비교
 	* img태그의 이미지는 width, height에 맞게 늘어난다
 		그러나 background-image의 이미지는 늘어나지 않고 잘린다
 	* img태그는 height를 가지고 있기때문에 height: auto가 가능.
@@ -181,40 +181,39 @@
 	`<ul>`: Unordered List 순서없이 모양으로 목록을 만듬
 	`<ol>`: Ordered List 번호를 매겨 순서가 있는 목록을 만듬
 	
-	**사용법**
-	```
+사용법
+```
+	<ol>
+		<li>목록1</li>
+		<li>목록2</li>
+	</ol>
+	<ul>
+		<li>목록1</li>
+		<li>목록2</li>
+		<li>목록3</li>
 		<ol>
-			<li>목록1</li>
-			<li>목록2</li>
+			<li>목록3-1</li>
+			<li>목록3-2</li>
 		</ol>
-
-		<ul>
-			<li>목록1</li>
-			<li>목록2</li>
-			<li>목록3</li>
-			<ol>
-				<li>목록3-1</li>
-				<li>목록3-2</li>
-			</ol>
-		</ul>
-	```
+	</ul>
+```
 
 	---
 
 * `<form/>`
 	웹 페이지에서의 입력 양식을 의미
 	
-	**속성**
+	속성
 	* name: form의 이름
 	* action: form 데이터가 전송되는 백엔드 url
 	* method: form 전송 방식 (GET / POST)
 	* ...
 
 
-	**종류**
-	* **< Input > 태그**
+종류
+	* < Input > 태그
 		* input 태그의 속성
-			- type: 종류를 나타냄
+			- [ ] type: 종류를 나타냄
 				`text: 일반 문자`
 				`password: 비밀번호`
 				`button: 버튼`
@@ -226,44 +225,44 @@
 				`hidden: 사용자에게 보이지 않는 숨은 요소`
 				
 				
-			- name: 데이터의 이름
-			- value: 기본 값을 지정
-			- placeholder: 글씨가 써질 곳에 연하게 글을 써줌. 마우스 커서가 생성되면 없어짐
+			- [ ] name: 데이터의 이름
+			- [ ] value: 기본 값을 지정
+			- [ ] placeholder: 글씨가 써질 곳에 연하게 글을 써줌. 마우스 커서가 생성되면 없어짐
 	
-		* **사용법**
-		```
-			<input type="text" name="name" placeholder="아이디 입력">
-		```
-		```
-			<input type="password" name="password" value="비밀번호 입력">
-		```	
-		```
-			<input type="radio" name="gender" value="M">남자
-			<input type="radio" name="gender" value="F">여자
-		```
-		```
-			<input type="checkbox" name="part" value="eng">영어
-			<input type="checkbox" name="part" value="math">수학
-		```	
-		```
-			<input type="submit" value="제출">
-		```
+		* 사용법
+```
+	<input type="text" name="name" placeholder="아이디 입력">
+```
+```
+	<input type="password" name="password" value="비밀번호 입력">
+```	
+```
+	<input type="radio" name="gender" value="M">남자
+	<input type="radio" name="gender" value="F">여자
+```
+```
+	<input type="checkbox" name="part" value="eng">영어
+	<input type="checkbox" name="part" value="math">수학
+```	
+```
+	<input type="submit" value="제출">
+```
 	
-	* **< select > & < option > 태그**
+	* < select > & < option > 태그
 		드롭다운 리스트를 만드는 태그
 		
-		* **사용법**
-		```
-			<select>
-				<option value="ktx">KTX</option>
-				<option value="itx">ITX 새마을</option>
-				<option value="mugung">무궁화호</option>
-			</select>
-		```
+		* 사용법
+```
+	<select>
+		<option value="ktx">KTX</option>
+		<option value="itx">ITX 새마을</option>
+		<option value="mugung">무궁화호</option>
+	</select>
+```
 		
-	* **기타 < form >태그**
-		-   `<label>`
-		-   `<textarea>`
-		-   `<button>`
-		-   `<optgroup>`
-		-   `<fieldset>`
+	* 기타 < form >태그
+		- [ ]   `<label>`
+		- [ ]   `<textarea>`
+		- [ ]   `<button>`
+		- [ ]   `<optgroup>`
+		- [ ]   `<fieldset>`
