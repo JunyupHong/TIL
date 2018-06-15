@@ -44,7 +44,8 @@
 
 
 ### flex
-* 부모가 flex이면 자식들은 부모의 width를 전체flex중 자신의 flex값의 비율만큼 width를 갖는다
+* 부모가 flex이면 자식들은 부모의 width를 전체 flex중 자신의 flex값의 비율만큼 width를 갖는다
+* flex-direction: row가 default값!
 * 하지만 flex는 단단하지 않아서 외부의 영향에 따라 크기가 변할 수 있다
 따라서 크기의 고정이 필요하면 고정된 값으로 width를 주어야 한다
 * 자식들 중 width를 flex값이 아닌 고정된 px값을 갖는다면 그 자식을 제외한 나머지 자식들이 flex값의 비율로 width를 갖는다
@@ -53,5 +54,5 @@
 `display: flex`인 부모에 
 `align-items: center` (세로 가운데 정렬)
 `justify-content: center` (가로 가운데 정렬)을 적용하면
-쉽게 정렬할 수 있다
+자식들을 중앙 정렬할 수 있다
 
