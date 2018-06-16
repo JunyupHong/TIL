@@ -171,6 +171,7 @@ $color : lighten(#f00, 10)			// lighten은 밝게 해줌
 ```
 
 * **@mixin** (매크로역할)
+@content를 사용하면 mixin의 내부에 접근할 수 있다!!!!
 ```
 @mixin inline-block				// @mixin의 inline-block을 정의
 	display : inline-block
@@ -180,6 +181,10 @@ $color : lighten(#f00, 10)			// lighten은 밝게 해줌
 	background-image : url($url)
 	background-size : cover
 
+@mixin view-moblie
+	@media screen and (min-width: 480px)
+		@content					// @content를 이용하면
+									// 사용하는 곳에서 내부에 접근이 가능!
 ```
 
 **@include**로 사용
@@ -195,6 +200,9 @@ $color : lighten(#f00, 10)			// lighten은 밝게 해줌
 		.icon  			// icon은 button의 자식 == .button > .icon
 			@include inline-block
 			height: $button-height
+			@include view-moblie
+				background: white		// @content를 사용했으므로
+										// 내부에 접근을 할 수 있다
 ```
 
 * **@import**
