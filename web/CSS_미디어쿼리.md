@@ -1,4 +1,4 @@
-# CSS 미디어 쿼리
+# CSS 미디어쿼리
 ## 미디어 쿼리
 * 반응형 웹에서 사용
 * 브라우저 지원
@@ -15,7 +15,7 @@
 	전체 미디어 쿼리를 부정
 * only 연산자
 	미디어 쿼리를 지원하지 않는 브라우저가 주어진 스타일을 적용하는 것을 방지
-**주의**
+* 주의사항
 	* 	not이나 only 연산자를 사용하려면 미디어 타입을 규정해야함
 	* 미디어 쿼리는 대소문자를 구별하지 않음
 
@@ -102,7 +102,24 @@
 		// (not연산자가 ,뒤에는 영향을 미치지 않는다)
 }
 ```
+
 2. 링크로 연결
 ```
 <link rel="stylesheet" media="mediatype and|not|only mediafeature" href="file.css">
 ```
+
+
+
+### @mixin과의 사용
+```
+@mixin view-moblie
+	@media screen and (min-width: 480px)
+		@content				// @content를 이용하면
+								// 사용하는 곳에서 내부에 접근이 가능!
+```
+```
+@include view-moblie
+	background: white		// @content를 사용했으므로
+							// 내부에 접근을 할 수 있다
+```
+
