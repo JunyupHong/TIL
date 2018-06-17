@@ -224,7 +224,12 @@
 	`radio: 한개만 선택할 수 있는 컴포넌트`
 	`checkbox: 다수를 선택할 수 있는 컴포넌트`
 	`file: 파일업로드`
+	`reset: form의 값들을 초기화하는 컴포넌트`
+	`image: 이미지 형태로 나타남, src="이미지파일", alt="대체 텍스트 작성"`
 	`hidden: 사용자에게 보이지 않는 숨은 요소`
+	`disabled: 해당 form요소를 비활성화시킴`
+	`readonly: 폼안의 텍스트를 수정할 수 없고 읽을수만 있다`
+	`maxlength: 글자 수 제한으로 지정된 숫자 이상은 넣을 수 없게 한다`
 				
 	name: 데이터의 이름
 	value: 기본 값을 지정
@@ -267,3 +272,24 @@
 `<button>`
 `<optgroup>`
 `<fieldset>`
+
+
+
+* **< textarea > 태그**
+높이와 너비를 가진 글 박스
+
+**Input 태그의 속성**
+```
+cols: 너비
+	cols="40"	// 40글자의 너비를 갖는다
+```
+```
+rows: 높이
+	rows=“3”	// 3줄의 높이를 갖는다
+```
+`disabled: 해당 form요소를 비활성화시킴`
+`readonly: 폼안의 텍스트를 수정할 수 없고 읽을수만 있다`
+
+**input 태그의 text type과 textarea의 차이점**
+input태그는 한 줄로만 작성가능
+textarea는 여러 줄 작성 가능 (엔터도 작성 가능)
