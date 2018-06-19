@@ -11,18 +11,18 @@
 
 
 ### HyperText Markup Language
-즉, html이란 태그들을 이용하여 **텍스트 이상의 요소를 정의하는 약속된 언어**
+즉, html이란 태그들을 이용하여 텍스트 이상의 요소를 정의하는 약속된 언어
 
----
+- - - -
+
 ### HTML의 구조
-```<tag key = value>```
+`<tag key = value>`
 'key = value' 는 attribute 이다
 
-ex) ```<p align="center"> ...  </p>```
+ex) `<p align="center"> ...  </p>`
 
----
+- - - -
 
 ### 주석
-```<!--주석이 들어가는 자리-->```
-
+`<!--주석이 들어가는 자리-->`
 
