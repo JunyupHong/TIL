@@ -103,11 +103,95 @@ console.log(typeof(nullVar));	// object
 `var undefinedVar;`
 
 
+- - - -
 
+## 참조 타입(객체 타입)
+* 기본 타입을 제외한 모든 값은 객체다
+* 자바스크립트의 객체는 단순히 ‘key : value’ 형태의 프로퍼티들을 저장하는 컨테이너
+* 해시 자료구조와 상당히 유사
+* 객체의 프로퍼티는 함수로 포함할 수 있다
 
+### 객체 생성
+1. Object() 생성자 함수 이용
+```javascript
+var foo = new Object();
 
+// 객체 프로퍼티 생성
+foo.name = 'bob';
+foo.age = 42;
 
+console.log(typeof foo);			// object
+console.log(foo);					// { name:'bob', age: 30 }
+```
 
+2. 객체 리터럴 방식 이용
+``` javascript
+var foo = {
+	name : 'foo',
+	age : '30'
+};
 
+console.log(typeof foo);			// object
+console.log(foo);					// { name:'bob', age: 30 }
+```
 
+3. 생성자 함수 이용
 
+	---
+
+### 객체 프로퍼티 접근 & 사용
+
+* [] 또는 . 을 사용해서 객체 프로퍼티에 접근
+
+* 대괄호만을 사용해야하는 경우
+	* 접근하려는 프로퍼티가 표현식 일 때
+	(ex ‘proterty-name’ , - 연산자가 있는 표현식)
+	* 예약어 일 때
+	
+	* 이때 대괄호를 사용하지 않고 마침표를 사용하면 NaN 값이 출력
+> NaN(Not a Number)값  
+> 수치 연산을 해서 정상적인 값을 얻지 못할 때 출력되는 값  
+
+* 프로퍼티 삭제
+	* 	delete 연산자를 이용
+	
+``` javascript
+// 객체 생성
+var foo = {
+	name : 'foo',
+	major : 'computer'
+};
+
+// 객체 프로퍼티 접근
+console.log(foo.name);			// foo
+console.log(foo['name']);			// foo
+console.log(foo.nickname);		// undefined
+
+// 객체 프로퍼티 갱신
+foo.major = 'engineering';	// foo의 major 프로퍼티를 바꿈
+
+// 객체 프로퍼티 동적 생성
+foo.age = 30;					// foo프로퍼티에 없던 age를 생성, 할당
+
+// 대괄호만을 사용해야하는 경우
+foo['foo-name'] = 'foo';
+
+// 객체 프로퍼티 삭제
+delete foo.age;				// foo에서 age 프로퍼티를 삭제
+delete foo;					// foo객체는 삭제되지 않음
+```
+
+	---
+
+### 참조타입의 특성
+* 기본 타입을 제외한 모든 값은 객체이다
+* 객체는 자바스트립트에서 참조 타입이다
+* 객체의 모든 연산이 실제 값이 아닌 참조값으로 처리되기 때문
+
+#### 객체의 비교
+* 동등 연산자(==)
+객체의 프로퍼티 값이 아닌 참조값을 비교
+
+#### 참조에 의한 함수 호출 방식
+* 기본타입: Call By Value
+* 참조타입: Call By Reference
