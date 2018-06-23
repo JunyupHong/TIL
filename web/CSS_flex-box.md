@@ -10,7 +10,7 @@
 ## flex box의 축
 ### 주축(진행축)
 * 주축은 flex-direction 속성에 의해 정의된다
-* 속성
+#### 속성
 	* row                            (default, 오른쪽에서 왼쪽 방향)
 	* row-reverse             (왼쪽에서 오른쪽 방향)
 	* column                     (위쪽에서 아래쪽 방향)
@@ -28,7 +28,7 @@
 * `display: inline-flex`나 `display: flex`로 선언한다
 (이때 자식은 flex item이 된다)
 
-* 속성
+#### 속성
 	* flex-direction (주축을 설정한다, default: row)
 	`flex-direction: row | row-reverse | column | column-reverse;`
 	* flex-wrap (줄 바꿈을 제어, default: nowrap)
@@ -122,7 +122,7 @@ flex: 1 1 auto;
 
 ### justify-content
 * 주축(진행축) 정렬, flex-item 사이의 간격을 제어
-* 속성
+#### 속성
 	* flex-start                   (주축의 시작점에 맞춰 정렬)
 	* flex-end                    (주축의 끝점에 맞춰 정렬)
 	* center                       (주축의 가운데에 맞춰 정렬)
@@ -134,7 +134,7 @@ flex: 1 1 auto;
 
 ### align-items
 * 교차축 정렬
-* 속성
+#### 속성
 	* stretch           (default값, 교차축으로 크기를 늘려서 정렬)
 	* flex-start         (교차축의 시작점에 맞춰 정렬)
 	* flex-end         (교차축의 끝점에 맞춰 정렬)
@@ -146,7 +146,7 @@ flex: 1 1 auto;
 ### align-self
 * 독립적인 교차축 정렬(flex-item 에서 자신만 직접 제어)
 * align-items보다 우선순위가 높다
-* 속성
+#### 속성
 	* auto                (default값, align-items 속성을 따름)
 	* stretch
 	* flex-start
@@ -160,7 +160,7 @@ flex: 1 1 auto;
 * 여러 줄의 교차축 정렬과 줄 사이 간격 제어
 * `flex-wrap: wrap`인 경우만 적용
 * align-items 보다 우선순위가 높다
-* 속성
+#### 속성
 	* stretch           (길이를 늘리지않고 줄 사이의 간격을 균등하게 준다)
 	* flex-start
 	* flex-end
