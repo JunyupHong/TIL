@@ -14,7 +14,7 @@
 	* 함수(function)
 	* 정규표현식
 
-### 특징
+### JavaScript 데이터 타입의 특징
 * 느슨한 타입 체크
 * var, let, const 라는 키워드로 변수를 선언 (var는 잘 사용하지 않는다!)
 	(변수는 대소문자를 구별)
@@ -102,6 +102,19 @@ console.log(typeof(nullVar));	// object
 * 기본적으로 값이 할당되지 않은 변수 = undefined 타입
 `var undefinedVar;`
 
+
+## 기본타입과 표준 메서드
+* 자바스크립트는 숫자, 문자열, 불린 값에 대해 각 타입별로 호출 가능한 표준 메서드를 정의하고 있다
+* 기본타입은 객체가 아니지만 메서드 호출이 가능
+	(메서드 처리 순간에 객체로 변환된 다음 각 타입별 표준 메서드를 호출 하고 메서드 호출이 끝나면 다시 기본값으로 복귀)
+``` javascript
+// 숫자 메서드 호출
+var num = 0.5;
+console.log(num.toExponential(1));	// '5.0e-1'
+
+// 문자열 메서드 호출
+console.log("test".charAt(2));		// 's'
+```
 
 - - - -
 
