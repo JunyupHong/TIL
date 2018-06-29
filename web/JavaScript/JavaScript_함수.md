@@ -291,7 +291,7 @@ document.on('click', function(){		// 클릭되었을때 실행되는 콜백함�
 
 	---
 
-### 즉시 실행 함수
+### 즉시 실행 함수(IIFE, immediately-invoked function expression)
 * 함수가 선언 되자마자 실행되게 만든 함수
 * 최초 한 번의 실행만을 필요로하는 초기화 코드 등에 사용할 수 있다.
 * 함수 리터럴을 괄호로 싸고 함수를 호출 하기위해 ()를 붙여준다
@@ -306,16 +306,18 @@ document.on('click', function(){		// 클릭되었을때 실행되는 콜백함�
 > 함수 내부에서 정의된 매개변수와 변수들은 함수 코드 내부에서만 유효할 뿐 함수 밖에서는 유효하지 않다. (var문으로 변수를 정의했을 경우) (var문 없이 변수를 정의하면 호이스팅(hoisting)에 의해 전역에서 접근이 가능하다..)  
 ``` javascript
 (function() {
-  for(var i = 0; i < 10; i++) {		// i는 함수 내부에서만 접근 가능
-    console.log('i', i);
+  for(var i = 0; i < 10; i++) {
+		// i는 함수 내부까지 호이스팅된다
+		// 따라서 함수 내부에서만 접근 가능
   }
 })();
 console.log('after loop i is', i); // error (i is undefined)
 
 
 (function() {
-  for(j = 0; j < 10; j++) {		// j가 호이스팅 된다..
-    console.log('j', j);			// 즉, 전역scope에 var=j;가 생성
+  for(j = 0; j < 10; j++) {	
+		// j가 전역scope에 호이스팅 된다..
+    	// 즉, 전역scope에 var=j;가 생성
   }
 })();
 console.log('after loop j is', j); // 10 (에러가 나지 않는다)
