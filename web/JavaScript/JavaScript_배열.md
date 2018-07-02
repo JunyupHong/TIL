@@ -218,6 +218,14 @@ console.log(arr);					// [0, 1, 2]
 * 일반 객체 중 length 프로퍼티를 가진 객체
 * 표준 객체 메서드 사용 가능
 	(apply() 메소드를 이용해 push() 메소드 사용)
+``` javascript
+var obj = {
+	name: 'foo',
+	lenght: 1
+};
+Array.prototype.push.apply(obj, ['baz']);
+console.log(obj);		// {'1': 'baz', name: 'foo', length: 2}
+```
 * ex) arguments 객체, jQuery 객체, …
 
 ``` javascript
