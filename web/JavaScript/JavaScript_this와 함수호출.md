@@ -267,5 +267,109 @@ function A(arg) {
 * A가 호출 될때 this가 A의 인스턴스인지를 확인한다
 * this가 A의 인스턴스가 아니라면 new로 생성자함수를 호출하고 리턴하게 해준다
 	따라서 생성자함수에 new를 사용하지않고도 전역객체에 접근하지않고 새 인스턴스를 생성할 수 있게 한다.
+	
+	—
 
+### call()과 apply() 메서드를 이용한 명시적인 this 바인딩
+* call()과 apply()는 모든 함수의 부모객체인 Function.prototype 객체의 메서드이므로 모든 함수에서 메서드 호출이 가능하다
+* call()과 apply() 메서드는 this를 원하는 값으로 명시적으로 매핑해서 특정 함수나 메서드를 호출할 수 있다는 장점이 있다
+* 유사 배열 객체에서 배열 메서드를 사용하기 위한 경우에 자주 이용
 
+#### apply()
+* 본질적인 기능은 함수 호출!
+``` javascript
+function.apply(thisArg, argArray);
+```
+* 첫번째 인자(thisArg) : 
+	* apply()메서드를 호출한 함수 내부에서 사용한 this에 바인딩 할 객체를 가리킨다.
+	* 즉, 첫번째 인자로 넘긴 객체가 this로 명시적으로 바인딩 된다.
+
+* 두번째 인자(argArray) : 
+	* 함수를 호출할때 넘길 인자들의 배열을 가리킨다.
+	* apply()의 기능은 결국 함수를 호출하는 것이므로 함수에 넘길 인자를 배열로 넘긴다.
+
+* 결론 : 
+	* 두번째 인자인 배열을 자신을 호출한 함수의 인자로 사용하되, 함수 내부에서 사용된 this는 첫 번째 인자 객체로 바인딩해서 함수를 호출하는 기능
+
+``` javascript
+function Person(name, age, gender) {
+	this.name = name;
+	this.age = age;
+	this.gender = gender;
+}
+
+var foo = {};
+
+Person.apply(foo, ['bob', 42, 'man']);
+	// Person 내부의 this는 전역 객체가 아닌 자신 객체(foo)가 된다
+```
+
+#### call()
+* apply() 메서드와 기능이 같다
+* call() 메서드는 두번째 인자를 배열 형태가 아닌 각각 하나의 인자로 넘긴다
+``` javascript
+function.call(thisArg, arg1, arg2, arg3, ...);
+```
+
+> call(), apply() 메서드를 이용해서  
+> argument(유사배열객체)에서 배열 표준 메서드 활용하기  
+``` javascript
+function myfunction(){
+	// argument.shift();
+			// 에러가 난다(shift()는 표준 배열 메서드 이므로)
+
+var args = Array.prototype.slice.apply(arguments);
+			// apply() 메서드로 표준배열 메서드 shift()를 사용할 수 있다
+}
+```
+
+- - - -
+
+## 함수 리턴
+* 자바스크립트 함수는 return문을 사용하지 않더라도 항상 리턴 값을 반환한다
+
+### 일반함수나 메서드는 리턴값을 지정하지 않을 경우 undefined 값이 리턴된다
+``` javascript
+var noReturnFunc() {
+	console.log('no return');
+};
+var result = noReturnFunc();		// no return
+console.log(result);				// undefined
+```
+
+### 생성자 함수에서 리턴값을 지정하지 않을 경우 생성된 객체가 리턴된다
+* 생성자 함수의 동작 방식
+	1. 빈 객체 생성 및 this 바인딩
+	2. this를 통한 프로퍼티 생성
+	3. 생성된 객체 리턴
+
+#### 예외
+* 생성자 함수에서 this로 바인딩 되는 생성된 객체가 아닌 다른 객체를 리턴할 경우
+	* 생성자 함수의 리턴값을 새로 생성한 객체가 아니라, return문의 객체가 리턴된다
+``` javascript
+function Person(name, age, gender) {
+	this.name = name;
+	this.age = age;
+	this.gender = gender;
+	return {name: 'bob', age: 42, gender: 'man'};
+		// 명시적으로 다른 객체를 리턴
+}
+
+var foo = new Person('foo', 24, 'woman');
+console.log(foo);		// name: 'bob', age: 42, gender: 'man'
+```
+
+* 생성자 함수의 리턴값으로 넘긴 값이 객체가 아닌 불린, 숫자, 문자열일 경우
+	* 생성자 함수의 리턴값이 아닌 새로 생성된 객체가 리턴된다
+``` javascript
+function Person(name, age, gender) {
+	this.name = name;
+	this.age = age;
+	this.gender = gender;
+	return 100;
+		// 명시적으로 숫자를 리턴
+}
+
+var foo = new Person('foo', 24, 'woman');
+console.log(foo);		// name: 'foo', age: 24, gender: 'woman'
+```
