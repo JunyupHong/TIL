@@ -19,6 +19,7 @@ var array = ['a', 'b', 'c'];
 console.log(array[0]);	// a
 ```
 
+- - - -
 
 ## 배열의 요소 생성
 * 동적으로 배열의 원소를 추가 가능
@@ -39,11 +40,12 @@ console.log(array.length);		// 11
 // length프로퍼티는 배열 내에 가장 큰 인덱스에 1을 더한 값
 ```
 
+- - - -
 
 ## length 프로퍼티
 * 자바스크립트의 모든 배열은 length 프로퍼티가 존재
 * 배열 내에 가장 큰 인덱스에 1을 더한 값!
-* 하지만 실제 메모리는 length 크기처럼 할당되지 않는다
+* 하지만 실제 메모리는 length 크기만큼 할당되지 않는다
 	=> 실제 값을 가지고 있는 인덱스만 메모리 할당
 * 배열의 length 프로퍼티는 코드를 통해 명시적으로 값을 변경 가능
 
@@ -82,21 +84,23 @@ console.log(arr);			// [0]
 
 arr.length = 5;
 arr.push(1);
-console.log(arr);			// [0, <3 empty items>, 1]
+console.log(arr);			// [0, <4 empty items>, 1]
 ```
 
-
+- - - -
 
 ## 배열과 객체
 * 배열은 객체이다
 
 ### 배열과 객체 비교
 ``` javascript
+// 1. 배열과 객체의 선언
 // array 선언 (대괄호)
 var array = ['red', 'green', 'blue'];
 
 // object 선언 (중괄호)
 // 숫자가 아닌 문자열로 key값 설정
+// key : value 형태로 선언
 var obj = {
 		'0': 'red',
 		'1': 'green',
@@ -109,20 +113,21 @@ console.log(obj[0]);			// red
 		// 자바스크립트 엔진이 자동으로 숫자를 문자열로 바꿔줌
 		// 따라서 obj['0']이 아닌 obj[0]으로도 접근 가능
 
-// type 비교
+// 2. type 비교
 console.log(typeof array);	// object (배열도 객체이다!)
 console.log(typeof obj);		// object
 
-// length 프로퍼티
+// 3. length 프로퍼티
 console.log(array.length);	// 3
 console.log(obj.length);		// undefined
 								// (length 프로퍼티가 존재하지 않음)
 
-// 배열 표준 메서드
+// 4. 배열 표준 메서드
 array.push('white');			// 가능
 obj.push('white');			// 불가능(type error)
 ```
 
+- - - -
 
 ## 배열의 프로퍼티 동적 생성
 * 배열은 객체이므로 인덱스가 숫자인 배열 원소 이외에도 객체처럼 동적으로 프로퍼티를 생성 가능
@@ -136,6 +141,7 @@ console.log(arr.length);		// 3
 			// (length 프로퍼티는 배열원소의 가장 큰 인덱스가 변했을때 변함)
 ```
 
+- - - -
 
 ## 배열의 프로퍼티 열거
 * 객체는 for in 문으로 프로퍼티를 열거
@@ -155,6 +161,7 @@ for (var i = 0; i < arr.length; i++) {
 }
 ```
 
+- - - -
 
 ## 배열 요소 삭제
 * 배열도 객체이므로 delete 연산자를 이용
@@ -171,7 +178,6 @@ console.log(arr);		//	[0, 1, <1 empty item>, 3, 4, 5];
 console.log(arr.length)	// 6
 ```
 
-	---
 
 ### splice() 배열 메서드
 * 배열에서 요소를 완전히 삭제
@@ -192,7 +198,7 @@ arr.splice(1, 2, 9, 9, 9, 9)		// 1번 인덱스부터 2개 삭제하고
 console.log(arr);					// [0, 9, 9, 9, 9, 4, 5]
 ```
 
-
+- - - -
 
 ## 생성자 함수 Array()
 * 배열은 일반적으로 배열 리터럴로 생성
@@ -212,22 +218,12 @@ var arr2 = new Array(0, 1, 2);
 console.log(arr);					// [0, 1, 2]
 ```
 
-
+- - - -
 
 ## 유사 배열 객체
 * 일반 객체 중 length 프로퍼티를 가진 객체
-* 표준 객체 메서드 사용 가능
-	(apply() 메소드를 이용해 push() 메소드 사용)
-``` javascript
-var obj = {
-	name: 'foo',
-	lenght: 1
-};
-Array.prototype.push.apply(obj, ['baz']);
-console.log(obj);		// {'1': 'baz', name: 'foo', length: 2}
-```
-* ex) arguments 객체, jQuery 객체, …
-
+* 표준 배열 메서드 사용 가능
+	( apply() 메소드를 이용해 명시적인 this 바인딩을 한 후 push() 메소드 사용 )
 ``` javascript
 var obj = {
 	name: 'obj',
@@ -237,5 +233,15 @@ var obj = {
 console.log(obj.length);		// 1
 obj.push('a');				// type error
 ```
+``` javascript
+var obj = {
+	name: 'foo',
+	lenght: 1
+};
+Array.prototype.push.apply(obj, ['baz']);
+console.log(obj);		// {'1': 'baz', name: 'foo', length: 2}
+```
+
+* ex) arguments 객체, jQuery 객체 등이 유사 배열 객체 형태
 
 

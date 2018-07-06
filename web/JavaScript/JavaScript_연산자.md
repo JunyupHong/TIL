@@ -15,9 +15,6 @@ console.log(add2);		// 1a
 ## typeof 연산자
 * 피연산자의 타입을 문자열 형태로 리턴
 
-> null과 배열은 object 타입  
-> 함수는 function 타입  
-
 |                |    타입    | typeof 결과 |
 |:—————-:|:—————-:|:————————:|
 | 기본타입 |    숫자    | ‘number’ |
@@ -29,6 +26,8 @@ console.log(add2);		// 1a
 | 참조타입 |  **배열**   |    **‘object’**  |
 | 참조타입 |  **함수**   |    **‘function’**  |
 
+> null과 배열은 object 타입  
+> 함수는 function 타입  
 
 - - - -
 
@@ -64,7 +63,7 @@ console.log(!!true);				// true
 console.log(!!false);				// false
 console.log(!!null);				// false
 console.log(!!undefined);			// false
-console.log(!!{});				// true
+console.log(!!{});				// true (객체는 빈객체여도 true)
 console.log(!![1, 2, 3]);			// true
 ```
 
