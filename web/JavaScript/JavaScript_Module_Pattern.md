@@ -9,7 +9,7 @@
 * 일반적으로 모듈 패턴은 은 원래 기존의 소프트웨어 엔지니어링에서 클래스에 대한 private 과 public한 캡슐화를 제공하는 방법으로 정의
 
 * 자바스크립트에서의 모듈 패턴은 전역 영역(global scope)에서 특정 변수 영역(local scope)을 보호하기 위해 단일 객체 안의 public, private 변수/메서드를 포함할 수 있게 한다
-* 이런 특성의 결과로 동일 페이지 내에서도 함수이름이나 변수가 출동하는 것을 예방할 수 있다.
+* 이런 특성의 결과로 동일 페이지 내에서도 함수이름이나 변수가 충돌하는 것을 예방할 수 있다.
 ``` javascript
 // 동일한 이름이지만 다른 영역에 존재하는 메서드이므로
 // 이름 충돌이 발생하지 않는다
@@ -71,6 +71,35 @@ var myNamespace = (function () {
 	};
 })();
 ```
+
+
+
+
+* return this로 사용 (생성자 함수로 생성된 함수는 명시적으로 this를 리턴하지 않아도 생성된 객체를 리턴해준다)
+``` javascript
+var myNamespace = (function () {
+	var myPrivateVar, myPrivateMethod;
+	// private 변수
+	myPrivateVar = 0;
+	// private 함수
+	myPrivateMethod = function( foo ){
+		console.log(foo);
+	};
+
+	
+	// public 변수
+	this.myPublicVar: "foo",
+
+	// public 힘수
+	this.myPublicFunction = function(bar) {
+		myPrivateVar++;
+		myPrivateMethod(bar);
+	}
+
+	return this;
+})();
+```
+
 
 
 
