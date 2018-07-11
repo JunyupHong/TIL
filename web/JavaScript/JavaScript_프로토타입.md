@@ -126,7 +126,7 @@ foo.sayHello();		// hello
 ```
 
 
-#### 프로토타입 메서드와 this 바인딩
+### 프로토타입 메서드와 this 바인딩
 * 프로토타입도 객체이므로 프로토타입 객체 메서드(= 프로토타입 메서드)도 객체의 메서드 이다
 * 객체의 메서드를 호출할 때 this의 바인딩 규칙(this는 메서드를 호출한 객체에 바인딩된다)
 ``` javascript
@@ -144,6 +144,64 @@ console.log(foo.getName());			// foo
 Person.prototype.name = 'person';
 console.log(foo.getName());			// person
 ```
+
+
+### 디폴트 프로토타입은 다른 객체로 변경이 가능하다
+* 디폴트 프로토타입 객체(constructor만 존재)는 함수가 생성될 때 같이 생성되며, 함수의 prototype 프로퍼티에 연결된다
+* 이 디폴트 프로토타입 객체를 다른 일반 객체로 변경하는 것이 가능
+* 이런 특징을 이용해 객체지향의 상속을 구현
+* 생성자 함수의 프로토타입 객체가 변경되면, 변경된 시점 이후에 생성된 객체는 변경된 프로토타입 객체로 `[[prototype]]링크`로 연결한다
+* 그러나 변경된 시점 이전에 생성된 객체는 기존 프로토타입 객체로 `[[prototype]]링크`가 연결한다
+
+``` javascript
+function Person(name) {
+	this.name = name;
+}
+console.log(Person.prototype.constructor);	// Person(name)
+
+var foo = new Person('foo');
+console.log(foo.country);						// undefined
+
+// 디폴트 프로토타입 객체 변경
+Person.prototype = {
+	country : korea,
+};
+console.log(Person.prototype.constructor);	// Object()
+			// Person.prototype 객체에는 constructor프로퍼티가 없다
+			// 프로토타입 체이닝으로
+			// Object.prototype 객체의 constructor를 호출
+
+var bar = new Person('bar');
+console.log(foo.country);				// undefined
+console.log(bar.country);				// korea
+console.log(foo.constructor);			// Person(name)
+console.log(bar.constructor);			// Object()
+```
+
+
+### 객체의 프로퍼티 읽기나 메서드를 실행할 때만 프로토타입 체이닝이 동작한다
+* 객체의 특정 프로퍼티를 읽으려고 할 때, 프로퍼티가 해당 객체에 없는 경우 프로토타입 체이닝이 발생한다
+* 객체에 있는 특정 프로퍼티에 값을 쓰려고하면 프로토타입 체이닝이 일어나지 않고 프로퍼티 값을 변경하거나(객체에 프로퍼티가 있는경우), 프로퍼티를 동적으로 생성한다(객체에 프로퍼티가 없는 경우)
+``` javascript
+function Person(name) {
+	this.name = name;
+}
+Person.prototype.country = 'korea';
+
+var foo = new Person('foo');
+vaer bar = new Person('bar');
+
+// 프로토타입 체이닝
+console.log(foo.country);			// korea
+console.log(bar.country);			// korea
+
+foo.country = 'USA';
+console.log(foo.country);			// USA
+							// foo의 country가 호출
+console.log(bar.country);			// korea
+							// 프로토타입 체이닝
+```
+
 
 
 
