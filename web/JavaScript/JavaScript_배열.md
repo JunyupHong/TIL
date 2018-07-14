@@ -245,3 +245,32 @@ console.log(obj);		// {'1': 'baz', name: 'foo', length: 2}
 * ex) arguments 객체, jQuery 객체 등이 유사 배열 객체 형태
 
 
+
+### 일반 객체와 유사 배열 객체의 차이점
+* 일반 객체와 유사배열객체는 모두 apply()와 call() 메서드를 이용해 표준배열 메서드를 이용할 수 있다.
+
+* 일반객체의 경우 표준배열 메서드를 사용하면 0번 key부터 push가 되고 자바스크립트 내부적으로 length프로퍼티를 생성해준다 (유사배열 객체가 된다)
+* 하지만 유사배열객체의 경우 표준배열메서드를 사용하면 length부터 key 값이 할당되고 그 key에 push가 된다
+
+``` javascript
+
+var obj = {
+	name: 'obj',
+};
+var objArray = {
+	name : 'objArray',
+	length: 10
+};
+
+Array.prototype.push.apply(obj, ['a', 'b']);
+console.log(obj);	
+	// { '0': 'a', '1': 'b', name: 'obj', length: 2 }
+			// 0번 인덱스부터 push된다
+			// 자바스크립트에서 내부적으로 length생성(유사 배열 객체가 된다)
+
+Array.prototype.push.apply(objArray, ['a', 'b']);
+console.log(objArray);
+	// { '10': 'a', '11': 'b', name: 'objArray', length: 12 }
+			// length값의 인덱스부터 push된다
+```
+
