@@ -7,23 +7,23 @@
 
 
 ## 사용
-1. express 프로젝트 생성
+* express 프로젝트 생성
 
-2. 직접 script에 추가
+* 직접 script에 추가
 ``` javascript
 script(/src/=‘/javascripts/vue.js’)
 ```
-* vue.js파일을 받아서 script로 추가해주면된다!
+	* vue.js파일을 받아서 script로 추가해주면된다!
 
 
-3. npm 사용
+* npm 사용
 `$ npm install vue`
-* Vue로 대규모 응용 프로그램을 빌드할 때 NPM을 권장
-* Webpack 또는 Browserify와 같은 모듈 번들러와 잘 작동
-* Vue는 싱글 파일 컴포넌트를 만들기 위한 도구도 제공
+	* Vue로 대규모 응용 프로그램을 빌드할 때 NPM을 권장
+	* Webpack 또는 Browserify와 같은 모듈 번들러와 잘 작동
+	* Vue는 싱글 파일 컴포넌트를 만들기 위한 도구도 제공
 
-4. CLI
-* 단일 페이지 응용 프로그램을 빠르게 스캐폴딩하기 위한 공식 CLI
+* CLI
+	* 단일 페이지 응용 프로그램을 빠르게 스캐폴딩하기 위한 공식 CLI
 
 
 
