@@ -123,7 +123,7 @@ const app = new Vue({
 - - - -
 
 ## 라이프사이클 다이어그램
-![vue 인스턴스 라이프사이클](./image/Vue_Instance_LifeCycle_eng.png)
+![vue 인스턴스 라이프사이클](../image/Vue_Instance_LifeCycle_eng.png)
 
 
 
