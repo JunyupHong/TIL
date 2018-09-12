@@ -402,4 +402,224 @@ var myGreatMixin = {
 ```
 
 
+- - - -
+
+## 우선순위 B규칙: 가독성 향상을 위함
+### 컴포넌트 파일
+* 파일을 연결하기 위해 빌드 시스템을 사용할 때마다, 각 컴포넌트는 자체 파일에 있어야 한다
+* 이렇게하면 컴포넌트를 편집하거나 사용 방법을 검토해야 할 때 컴포넌트를 더 빨리 찾을 수 있다
+
+``` javascript
+// 잘못된 예제
+Vue.component('TodoList', {
+  // ...
+})
+
+Vue.component('TodoItem', {
+  // ...
+})
+```
+```
+// 올바른 예제
+// 컴포넌트 폴더 내에 컴포넌트 파일들이 들어있어야 한다
+components/
+|- TodoList.js
+|- TodoItem.js
+
+components/
+|- TodoList.vue
+|- TodoItem.vue
+```
+
+### 싱글 파일 컴포넌트 이름 규칙 지정(casing)
+* 싱글 파일 컴포넌트의 파일 이름은 항상 PascalCase 이거나 kebab-case이여야 한다 (kebab-case를 사용한다!)
+> **<표기법>**  
+> > camelCase  
+> 	각 단어의 첫문자를 대문자로 표기하고 붙여쓰되, 맨 처음 문자는 소문자로 표기  
+> > PascalCase  
+> 	첫 단어를 대문자로 표시하는 표기법  
+> > kebab-case  
+> 	하이픈(-)으로 단어를 연결하는 표기법  
+> > snake_case  
+> 	단어를 밑줄문자(_)로 구분하는 표기법  
+* PascalCase는 JS, JSX 및 템플릿의 컴포넌트를 참조하는 방식과 일관성이 있으므로 code editor에서 자동 완성과 함께 가장 잘 작동한다
+* 대소 문자를 혼용하는 파일명은 대소 문자를 구별하지 않는 파일시스템에 문제를 야기할 수 있기 때문에 code editor는 kebab-case도 완벽하게 받아들일 수 있다
+
+
+### 베이스 컴포넌트 이름
+* 앱 별 스타일 및 규칙을 적용하는 기본 컴포넌트 (프리젠 테이션, dumb 또는 순수 컴포넌트)는 모두 Base, App 또는 V와 같은 특정 접두사로 시작해야한다
+
+* 아래 컴포넌트들은 일관된 스타일 및 동작을 위한 기반을 마련한다
+	* HTML요소
+	* 기타 기본 접두사가 붙은 컴포넌트
+	* 타사 UI 컴포넌트
+* 하지만 그들은 (Vuex 상점 등의) 글로벌 state를 절대 포함하지 않는다
+* 특정 용도로 엘리먼트(ex base-icon)가 존재하지 않는 한, 해당 이름은 종종 래핑하는 요소의 이름(ex base-button, base-table)을 포함한다
+
+* 장점
+	* 컴포넌트의 이름은 항상 여러 단어여야 하므로 이 규칙을 사용하면 간단한 구성 요소 래퍼(ex MyButton, VueButton)에 대한 임의의 접두사를 선택할 필요가 없다
+	* 이러한 컴포넌트는 자주 사용되므로 모든 곳으로 가져오는 대신 전역으로 만들면 된다(접두사는 Webpack에서 가능하다)
+> webpack  
+> 두 그룹의 명세를 모두 지원하는 JavaScript 모듈화 도구   
+``` javascript
+var requireComponent = require.context("./src", true, /^Base[A-Z]/)
+requireComponent.keys().forEach(function (fileName) {
+  var baseComponentConfig = requireComponent(fileName)
+  baseComponentConfig = baseComponentConfig.default || baseComponentConfig
+  var baseComponentName = baseComponentConfig.name || (
+    fileName
+      .replace(/^.+\//, '')
+      .replace(/\.\w+$/, '')
+  )
+  Vue.component(baseComponentName, baseComponentConfig)
+})
+```
+
+
+```
+// 잘못된 예제
+components/
+|- MyButton.vue
+|- VueTable.vue
+|- Icon.vue
+
+// 올바른 예제
+components/
+|- BaseButton.vue
+|- BaseTable.vue
+|- BaseIcon.vue
+
+components/
+|- AppButton.vue
+|- AppTable.vue
+|- AppIcon.vue
+
+components/
+|- VButton.vue
+|- VTable.vue
+|- VIcon.vue
+```
+
+
+
+### 싱글 인스턴스 컴포넌트 이름
+* 하나의 활성 인스턴스만을 가져야하는 컴포넌트는 하나만 있을 수 있음을 나타내기 위해 컴포넌트파일 이름은 The 접두어로 시작해야한다
+
+* 이는 컴포넌트가 단일 페이지에서만 사용된다는 의미는 아니지만 페이지 당 한 번만 사용된다. 이러한 컴포넌트는 응용 프로그램 내에서 컨텍스트가 아닌 응용 프로그램에만 해당되므로 props를 허용하지 않는다. 만약 props를 추가해야 할 필요성을 느낀다면 실제로 페이지 당 한 번만 사용되는 재사용 가능한 구성 요소라는 것을 알 수 있다.
+```
+// 잘못된 예제
+components/
+|- Heading.vue
+|- MySidebar.vue
+
+// 올바른 예제
+components/
+|- TheHeading.vue
+|- TheSidebar.vue
+```
+
+
+### 강한 연관성을 가진 컴포넌트 이름
+* 부모와 밀접하게 연결된 하위 컴포넌트에는 상위 구성 요소 이름이 접두사로 포함되어야 한다
+
+* 컴포넌트가 단일 상위 구성 요소의 컨텍스트에서만 의미가있는 경우 해당 관계가 그 이름에 분명해야한다. editor는 일반적으로 파일을 사전 순으로 정리하기 때문에 이러한 관련 파일을 서로 나란히 유지한다.
+
+* 부모 컴포넌트의 이름을 가진 디렉토리에 자식 컴포넌트를 중첩하여 이 문제를 해결할 수 있지만 권장하지 않는다
+* 비슷한 이름을 가진 많은 파일은 code ediotr에서 신속한 파일 전환을 어렵게 만든다. 많은 하위 디렉토리가 중첩되어있어 편집기의 사이드 바에서 컴포넌트를 탐색하는데 걸리는 시간이 길어진다
+```
+// 접두사 대신
+// 디렉토리를 이용한 방법 (컴포넌트를 탐색하는데 시간이 오래걸림)
+components/
+|- TodoList/
+   |- Item/
+      |- index.vue
+      |- Button.vue
+   |- index.vue
+
+// 또는
+
+components/
+|- TodoList/
+   |- Item/
+      |- Button.vue
+   |- Item.vue
+|- TodoList.vue
+```
+```
+// 잘못된 예제
+components/
+|- TodoList.vue
+|- TodoItem.vue
+|- TodoButton.vue
+components/
+|- SearchSidebar.vue
+|- NavigationForSearchSidebar.vue
+
+// 올바른 예제
+components/
+|- TodoList.vue
+|- TodoListItem.vue
+|- TodoListItemButton.vue
+components/
+|- SearchSidebar.vue
+|- SearchSidebarNavigation.vue
+```
+
+
+
+### 컴포넌트 이름의 단어 순서 정렬
+* 컴포넌트 이름은 최상위 (보통 가장 일반적인) 단어로 시작하고 설명적인 수정 단어로 끝나야한다
+* 왜 덜 자연스러운 언어를 사용하도록 구성 요소 이름을 강요할까?
+	* 영어는 형용사 및 기타 설명자가 일반적으로 명사 앞에 표시되지만 예외는 커넥터 단어가 필요합니다 (Coffee _with_ milk, Soup _of the_ day, Visitor _to the_ museum)
+	* 이런 커넥터 단어를 컴포넌트 이름에 포함할 수 있지만 순서는 여전히 중요하다
+	* 또한 "최고 수준"으로 간주되는 것은 앱에 맥락을 나타낸다
+```
+// 예시
+// 검색 양식이 있는 앱
+// 검색과 관련된 구성 요소를 확인하는 것은 매우 어렵다
+components/
+|- ClearSearchButton.vue
+|- ExcludeFromSearchInput.vue
+|- LaunchOnStartupCheckbox.vue
+|- RunSearchButton.vue
+|- SearchInput.vue
+|- TermsCheckbox.vue
+
+// 규칙에 따라 구성 요소의 이름을 정한 앱
+// editor는 일반적으로 파일을 사전 순으로 정리하기 때문에 구성 요소 간의 모든 중요한 관계를 한눈에 알 수 있다
+components/
+|- SearchButtonClear.vue
+|- SearchButtonRun.vue
+|- SearchInputExcludeGlob.vue
+|- SearchInputQuery.vue
+|- SettingsCheckboxLaunchOnStartup.vue
+|- SettingsCheckboxTerms.vue
+```
+
+* 이 문제를 다르게 해결하고 "검색"디렉토리 아래에 모든 검색 구성 요소를 중첩 한 다음 "설정"디렉토리 아래에 모든 설정 구성 요소를 중첩시켜야 할 수 있다
+* 다음과 같은 이유로 매우 큰 앱 (예 : 100 개 이상의 구성 요소)에서만 이 방법을 고려하는 것이 좋다
+	* 	일반적으로 중첩 된 하위 디렉토리를 탐색하는 데는 단일 구성 요소 디렉토리를 스크롤하는 것보다 시간이 더 걸린다
+	* 이름 충돌로 인해 코드 편집기에서 특정 구성 요소로 빠르게 이동하기가 더 어려워진다
+	* 찾기 및 바꾸기가 이동 된 구성 요소에 대한 상대 참조를 업데이트하기에 충분하지 않기 때문에 리팩토링이 어려워진다
+```
+// 잘못된 예제
+components/
+|- ClearSearchButton.vue
+|- ExcludeFromSearchInput.vue
+|- LaunchOnStartupCheckbox.vue
+|- RunSearchButton.vue
+|- SearchInput.vue
+|- TermsCheckbox.vue
+
+// 올바른 예제
+components/
+|- SearchButtonClear.vue
+|- SearchButtonRun.vue
+|- SearchInputQuery.vue
+|- SearchInputExcludeGlob.vue
+|- SettingsCheckboxTerms.vue
+|- SettingsCheckboxLaunchOnStartup.vue
+```
+
+
 
