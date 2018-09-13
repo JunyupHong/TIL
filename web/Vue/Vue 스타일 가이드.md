@@ -622,4 +622,286 @@ components/
 ```
 
 
+### 셀프 클로징 컴포넌트
+* 내용이 없는 컴포넌트는 단일 파일 컴포넌트, 문자열 템플릿, JSX에서는 self-closing이어야 하지만, DOM 템플릿에서는 절대로 그러면 안된다
+* self-close 컴포넌트는 내용이 없으며 내용이 없도록 통신한다. 책의 빈 페이지와 "이 페이지는 고의적으로 비워 두었습니다."라는 레이블이 붙은 페이지의 차이이다. 코드는 불필요한 닫는 태그가 없어도 더 깨끗하다.
+
+* 그러나 HTML은 커스텀 엘리먼트의 self-closing을 허용하지 않는다 - 단지 공식 "void"엘리먼트 만 허용한다. 그렇기 때문에 Vue의 템플릿 컴파일러가 DOM보다 먼저 템플릿에 도달 한 다음 DOM 사양 준수 HTML을 제공해야만 전략이 가능하다다.
+
+``` html
+// 잘못된 예제
+<!-- In single-file components, string templates, and JSX -->
+<MyComponent></MyComponent>
+<!-- In DOM templates -->
+<my-component/>
+
+// 올바른 예제
+<!-- In single-file components, string templates, and JSX -->
+<MyComponent/>
+<!-- In DOM templates -->
+<my-component></my-component>
+```
+
+
+### 템플릿에서 컴포넌트 이름 규칙 지정(casing)
+* 대부분의 프로젝트에서 컴포넌트 이름은 단일 파일 컴포넌트와 string template에서 항상 PascalCase 여야하지만 DOM template에서는 kebab-case 여야한다
+* PascalCase는 케밥 케이스에 비해 몇 가지 장점이 있다
+	* 편집자는 PascalCase가 JavaScript에서도 사용되기 때문에 템플릿의 구성 요소 이름을 자동 완성 할 수 있다.
+	* <MyComponent>는 <my-component>보다 한 단어로 된 HTML 요소와 시각적으로 구별된다. 하나의 문자 (하이픈)가 아니라 두 문자의 차이 (대문자)가 있기 때문
+	* template에서 웹 컴포넌트와 같은 비 VUE 사용자 정의 요소를 사용하는 경우 PascalCase는 Vue 컴포넌트가 확실하게 표시되도록한다
+
+* HTML의 경우 대소 문자를 구분하지 않기 때문에 DOM 템플릿은 여전히 ​​kebab-case를 사용해야한다
+* 또한 이미 kebab-case에 집중적으로 투자 한 경우 HTML 규칙과 일관성을 유지하고 모든 프로젝트에서 동일한 케이스를 사용할 수 있다는 사실이 위에 나열된 이점보다 더 중요 할 수 있다. 이러한 경우 kebab-case를 사방에 사용하는 것도 허용된다
+
+
+``` html
+// 잘못된 예제
+<!-- In single-file components and string templates -->
+<mycomponent/>
+<!-- In single-file components and string templates -->
+<myComponent/>
+<!-- In DOM templates -->
+<MyComponent></MyComponent>
+
+// 올바른 예제
+<!-- In single-file components and string templates -->
+<MyComponent/>
+<!-- In DOM templates -->
+<my-component></my-component>
+
+	// OR
+
+<!-- Everywhere -->
+<my-component></my-component>
+```
+
+
+
+### JS/JSX에서 컴포넌트 이름 규칙 지정(casing)
+* JS / JSX의 컴포넌트 이름은 항상 PascalCase 여야한다. 
+* Vue.component를 통한 전역 구성 요소 등록 만 사용하는 더 간단한 응용 프로그램의 경우 문자열 안에 케밥 케이스가 있을 수 있다.
+
+* JavaScript에서 PascalCase는 클래스와 프로토 타입 생성자에 대한 규칙이다. (기본적으로 별개의 인스턴스를 가질 수 있는 것들에 대한 규칙). Vue 컴포넌트에는 인스턴스가 있으므로 PascalCase도 사용하는 것이 좋다. JSX 및 템플릿 내에서 PascalCase를 사용하면 코드 독자가 구성 요소와 HTML 요소를 더 쉽게 구별 할 수 있다.
+* 그러나 Vue.component를 통해 전역 컴포넌트 정의만 사용하는 응용 프로그램의 경우 kebab-case를 대신 사용하는 것이 좋다. 이유는 다음과 같다.
+	* 	JavaScript에서 전역 컴포넌트가 참조되는 경우는 드물기 때문에 JavaScript 규칙을 따르는 것이 바람직하지 않다.
+	* 이러한 응용 프로그램에는 항상 kebab-case를 사용해야하는 많은 in-DOM 템플릿이 포함되어 있다.
+
+``` javascript
+// 잘못된 예제
+Vue.component('myComponent', {
+  // ...
+})
+import myComponent from './MyComponent.vue'
+export default {
+  name: 'myComponent',
+  // ...
+}
+export default {
+  name: 'my-component',
+  // ...
+}
+
+// 올바른 예제
+Vue.component('MyComponent', {
+  // ...
+})
+Vue.component('my-component', {
+  // ...
+})
+import MyComponent from './MyComponent.vue'
+export default {
+  name: 'MyComponent',
+  // ...
+}
+```
+
+
+### 전체 이름 컴포넌트 이름
+* 컴포넌트 이름은 약어보다 완전한 단어를 선호해야한다
+* editor의 자동 완성 기능은 더 긴 이름을 쓰는 데 드는 비용을 매우 낮추지만 제공하는 명확성은 매우 중요하다. 흔치 않은 약어는 항상 피해야한다
+```
+// 잘못된 예제
+components/
+|- SdSettings.vue
+|- UProfOpts.vue
+
+// 올바른 예제
+components/
+|- StudentDashboardSettings.vue
+|- UserProfileOptions.vue
+```
+
+
+
+
+### Prop 이름 규칙 지정(casing)
+
+* prop의 이름은 선언하는 동안 항상 camelCase를 사용해야하지만 템플릿과 JSX에서는 kebab-case를 사용해야한다.
+* 단순히 각 언어의 규칙을 따르는 것. JavaScript 내에서는 camelCase가 더 자연스럽고, HTML 내에서는 케밥 케이스가 사용된다.
+
+```
+// 잘못된 예제
+	// script
+props: {
+  'greeting-text': String
+}
+	// template
+<WelcomeMessage greetingText="hi"/>
+
+// 올바른 예제
+	// script
+props: {
+  greetingText: String
+}
+	// template
+<WelcomeMessage greeting-text="hi"/>
+```
+
+
+
+### 다중 속성 엘리먼트
+
+* attribute가 여러개인 element는 여러줄에 걸쳐있어야하며, 한줄에 하나의 attribute가 있어야한다
+* JavaScript에서는 여러 줄에 걸쳐 여러 attribute를 갖는 객체를 분할하는 것이 훨씬 쉽기 때문에 널리 사용되는 것으로 간주된다. 템플릿과 JSX도 똑같은 배려가 필요하다
+``` html
+// 잘못된 예제
+<img src="https://vuejs.org/images/logo.png" alt="Vue Logo">
+<MyComponent foo="a" bar="b" baz="c"/>
+
+// 올바른 예제
+<img
+  src="https://vuejs.org/images/logo.png"
+  alt="Vue Logo"
+>
+<MyComponent
+  foo="a"
+  bar="b"
+  baz="c"
+/>
+```
+
+
+
+### 템플릿에서 단순한 표현식
+* 컴포넌트 템플릿에는 간단한 표현식만 포함되어야하고 복잡한 식은 computed 내에서 프로퍼티나 메소드로 정의되어서 사용되어야 한다
+
+```
+// 잘못된 예제
+{{
+  fullName.split(' ').map(function (word) {
+    return word[0].toUpperCase() + word.slice(1)
+  }).join(' ')
+}}
+
+// 올바른 예제
+<!-- In a template -->
+{{ normalizedFullName }}
+
+	// The complex expression has been moved to a computed property
+computed: {
+  normalizedFullName: function () {
+    return this.fullName.split(' ').map(function (word) {
+      return word[0].toUpperCase() + word.slice(1)
+    }).join(' ')
+  }
+}
+
+```
+
+
+
+### 단순한 계산된 속성
+* 복잡한 계산된 속성은 가능한한 더 간단한 속성으로 분할되어야 한다
+* 단순하고 잘 이름지어진 계산된 속성의 특징
+	* 테스트하기 쉽다 => 계산된 각 속성에 아주 간단한 표현식만 포함되어있을때 의존성이 거의 없으면 올바르게 계산된 테스트를 작성하는 것이 더 쉽다
+	* 더 읽기 쉽다 => 계산 된 속성을 단순화하면 재사용하지 않아도 각 값에 설명이 포함된 이름을 제공 할 수 있다. 이것은 다른 개발자 (그리고 미래의 개발자)가 관심있는 코드에 집중하고 무슨 일이 일어나고 있는지 쉽게 파악할 수있게 해준다.
+	* 변화하는 요구 사항에보다 적응 가능 => 이름을 지정할 수 있는 모든 값이 뷰에 유용할 수 있다. 예를 들어 사용자에게 저장 한 금액을 알려주는 메시지를 표시하도록 결정할 수 있다. 또한 판매 세를 계산하기로 결정할 수도 있지만, 최종 가격의 일부가 아닌 별도로 판매 세를 표시 할 수도 있다.
+	* 작고 집중된 계산된 속성은 정보가 사용되는 방법에 대한 가정이 적기 때문에 요구 사항이 변경 될 때 필요한 리팩토링이 적다.
+	
+``` javascript
+// 잘못된 예제
+	// price하나로 최종 값을 계산하는 것보다는 더 세분화해서 나누는 것이 좋다
+computed: {
+  price: function () {
+    var basePrice = this.manufactureCost / (1 - this.profitMargin)
+    return (
+      basePrice -
+      basePrice * (this.discountPercent || 0)
+    )
+  }
+}
+
+// 올바른 예제
+computed: {
+  basePrice: function () {
+    return this.manufactureCost / (1 - this.profitMargin)
+  },
+  discount: function () {
+    return this.basePrice * (this.discountPercent || 0)
+  },
+  finalPrice: function () {
+    return this.basePrice - this.discount
+  }
+}
+``` 
+
+
+### 속성 값에 따옴표
+* 비어 있지 않은 HTML attribute 값은 항상 따옴표(단일 또는 이중) 안에 있어야한다 (JS에서 사용되지 않는 경우에도).
+* 공백이 없는 attribute 값은 HTML에서 따옴표를 사용할 필요가 없지만 공백을 피하면서 속성 값을 쉽게 읽을 수 없게 만든다.
+``` html
+// 잘못된 예제
+<input type=text>
+<AppSidebar :style={width:sidebarWidth+'px'}>
+
+// 올바른 예제
+<input type="text">
+<AppSidebar :style="{ width: sidebarWidth + 'px' }">
+```
+
+### 축약형 디렉티브
+* 디렉티브 약어(v-bind은 : , v-on은 @)는 항상 사용되거나 항상 사용되지 않아야한다
+``` html
+// 잘못된 예제
+<input
+  v-bind:value="newTodoText"
+  :placeholder="newTodoInstructions"
+>
+<input
+  v-on:input="onInput"
+  @focus="onFocus"
+>
+
+// 올바른 예제
+<input
+  :value="newTodoText"
+  :placeholder="newTodoInstructions"
+>
+<input
+  v-bind:value="newTodoText"
+  v-bind:placeholder="newTodoInstructions"
+>
+<input
+  @input="onInput"
+  @focus="onFocus"
+>
+<input
+  v-on:input="onInput"
+  v-on:focus="onFocus"
+>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
