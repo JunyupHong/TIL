@@ -893,15 +893,424 @@ computed: {
 
 
 
+- - - -
+
+## 우선순위 C 규칙: 선택의 혼란 또는 판단 오버헤드 최소화
+
+### 컴포넌트/인스턴스 옵션 순서
+* 컴포넌트/인스턴스 옵션 순서는 일관되어야한다
+* 컴포넌트 옵션에 대해 권장하는 순서(카테고리들로 나뉘어져 있어서 플러그인들로부터 새로운 프로퍼티를 추가할 곳을 알 수 있다)
+```
+// 컴포넌트 옵션 순서
+
+1. Side Effects (triggers effects outside the component)
+	-> el
+
+2. Global Awareness (requires knowledge beyond the component)
+	-> name
+	-> parent
+
+3. Component Type (changes the type of the component)
+	-> functional
+
+4. Template Modifiers (changes the way templates are compiled)
+	-> delimiters
+	-> comments
+
+5. Template Dependencies (assets used in the template)
+	-> components
+	-> directives
+	-> filters
+
+6. Composition (merges properties into the options)
+	-> extends
+	-> mixins
+
+7. Interface (the interface to the component)
+	-> inheritAttrs
+	-> model
+	-> props/propsData
+
+8. Local State (local reactive properties)
+	-> data
+	-> computed
+
+9. Events (callbacks triggered by reactive events)
+	-> watch
+	-> Lifecycle Events (in the order they are called)
+
+10. Non-Reactive Properties (instance properties independent of the reactivity system)
+	-> methods
+
+11. Rendering (the declarative description of the component output)
+	-> template/render
+	-> renderError
+```
+
+### 엘리먼트 속성 순서
+* 엘리먼트의 attribute들의 속성은 일관되게 정렬되어야 한다
+* 컴포넌트 옵션에 대한 권장순서(카테고리들로 나뉘어 졌으므로, 커스텀 속성들과 지시어들을 추가 할 곳을 알 수 있다)
+```
+1. Definition (provides the component options)
+	-> is
+
+2. List Rendering (creates multiple variations of the same element)
+
+	-> v-for
+3. Conditionals (whether the element is rendered/shown)
+	-> v-if
+	-> v-else-if
+	-> v-else
+	-> v-show
+	-> v-cloak
+
+4. Render Modifiers (changes the way the element renders)
+	-> v-pre
+	-> v-once
+
+5. Global Awareness (requires knowledge beyond the component)
+	-> id
+
+6. Unique Attributes (attributes that require unique values)
+	-> ref
+	-> key
+	-> slot
+
+7. Two-Way Binding (combining binding and events)
+	-> v-model
+
+8. Other Attributes (all unspecified bound & unbound attributes)
+
+9. Events (component event listeners)
+	-> v-on
+
+10. Content (overrides the content of the element)
+	-> v-html
+	-> v-text
+```
 
 
+### 컴포넌트/인스턴스 옵션간 빈 줄
+* 여러 줄의 프로퍼티 사이에 하나의 빈 줄을 추가 할 수 있다(특히 스크롤 하지않고 옵션이 더이상 맞지 않는 경우)
+* 컴포넌트가 비좁거나 읽기 어려워지면 여러 줄의 프로퍼티 사이에 공백을 추가하면 쉽게 볼 수 있다
+``` javascript
+// 프로퍼티가 많을 떄는 사이에 빈 줄을 추가해준다
+props: {
+  value: {
+    type: String,
+    required: true
+  },
+
+  focused: {
+    type: Boolean,
+    default: false
+  },
+
+  label: String,
+  icon: String
+},
+
+computed: {
+  formattedValue: function () {
+    // ...
+  },
+
+  inputClasses: function () {
+    // ...
+  }
+}
+
+// No spaces are also fine, as long as the component
+// is still easy to read and navigate.
+props: {
+  value: {
+    type: String,
+    required: true
+  },
+  focused: {
+    type: Boolean,
+    default: false
+  },
+  label: String,
+  icon: String
+},
+computed: {
+  formattedValue: function () {
+    // ...
+  },
+  inputClasses: function () {
+    // ...
+  }
+}
+```
 
 
+### 싱글 파일 컴포넌트 최상위 엘리먼트 순서
+* 싱글 파일 컴포넌트는 <script>, <template>, <style> 태그 중 <style>태그가 마지막에 와야한다 (script나 template 중 적어도 하나는 항상 style태그가 필요하다!)
+``` html
+// 잘못된 예제
+	// style태그가 맨 위에 있음
+<style>/* ... */</style>
+<script>/* ... */</script>
+<template>...</template>
+<!-- ComponentA.vue -->
+<script>/* ... */</script>
+<template>...</template>
+<style>/* ... */</style>
+
+<!-- ComponentB.vue -->
+<template>...</template>
+<script>/* ... */</script>
+<style>/* ... */</style>
+
+// 올바른 예제
+<!-- ComponentA.vue -->
+<script>/* ... */</script>
+<template>...</template>
+<style>/* ... */</style>
+
+<!-- ComponentB.vue -->
+<script>/* ... */</script>
+<template>...</template>
+<style>/* ... */</style>
+	// 또는
+<!-- ComponentA.vue -->
+<template>...</template>
+<script>/* ... */</script>
+<style>/* ... */</style>
+
+<!-- ComponentB.vue -->
+<template>...</template>
+<script>/* ... */</script>
+<style>/* ... */</style>
+```
+
+- - - -
+
+## 우선순위 D 규칙: 잠재적인 위험을 내포한 패턴
+
+### key가 없는 v-if/v-if-else/v-else
+* 일반적으로 v-if + v-else가 동일한 유형의 엘리먼트(ex div, a, ...)를 사용하는 경우 키를 사용하는 것이 좋다
+* 기본적으로 Vue는 가능한 한 효율적으로 DOM을 업데이트한다
+* 동일한 유형의 엘리먼트간에 전환 할 때 기존 엘리먼트를 제거하고 그 위치에 새로운 엘리먼트를 추가하는 것이 아니라 단순히 기존 요소를 패치하는 것을 의미한다
+* 띠라서 key를 사용하지 않을 경우 실제로 동일하게 간주되어서는 안되는 경우에 의도하지 않은 부작용이 있을 수 있다
+``` html
+// 잘못된 예제
+<div v-if="error">
+  Error: {{ error }}
+</div>
+<div v-else>
+  {{ results }}
+</div>
+
+// 올바른 예제
+	// 같은 유형의 엘리먼트(v-if, v-else 둘 다 div) 이므로
+	// key를 설정해준다
+<div
+  v-if="error"
+  key="search-status"
+>
+  Error: {{ error }}
+</div>
+<div 
+  v-else 
+  key="search-results"
+>
+  {{ results }}
+</div>
+
+	// 다른 유형의 엘리먼트(v-if는 p태그, v-else는 div)이므로
+	// key를 설정하지 않았다
+<p v-if="error">
+  Error: {{ error }}
+</p>
+<div v-else>
+  {{ results }}
+</div>
+```
 
 
+### scoped에서 엘리먼트 셀렉터 사용
+* 엘리먼트 셀렉터는 scoped와 함께 사용하는 것을 피해야 한다
+* 많은 수의 엘리먼트 셀렉터가 느리기 때문에 scoped 스타일의 엘리먼트 셀렉터보다 클래스 셀렉터를 선호한다
+``` html
+// 잘못된 예제
+	// 엘리먼트를 선택하는 것이 아니라 클래스를 선택하는 것이 더 좋다
+<template>
+  <button>X</button>
+</template>
+
+<style scoped>
+button {
+  background-color: red;
+}
+</style>
+
+// 올바른 예제
+<template>
+  <button class="btn btn-close">X</button>
+</template>
+
+<style scoped>
+.btn-close {
+  background-color: red;
+}
+</style>
+```
 
 
+### 부모-자식간 의사소통
+* props 와 이벤트는 this.$parent, mutating props 대신 부모-자식 컴포넌트 의사소통에서 선호되어야한다
+
+* 이상적인 Vue 앱은 props는 아래에 있고, 이벤트는 위쪽에 있는 것이다 (이 규칙을 따르면 컴포넌트를 훨씬 더 쉽게 이해할 수 있다)
+* 그러나 prop mutation 또는 this.$parent가 이미 깊이 연관되어 있는 두개의 컴포넌트를 단순화 할 수 있는 경우가 있다
+* 문제는 이러한 패턴이 편리함을 제공할 수 있는 간단한 사례가 있다는 것이다(적은 코드 작성에 현혹되면 안된다)
+``` javascript
+// 잘못된 예제
+Vue.component('TodoItem', {
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    }
+  },
+  template: '<input v-model="todo.text">'
+})
+
+------------------------------------------------
+
+Vue.component('TodoItem', {
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    removeTodo () {
+      var vm = this
+      vm.$parent.todos = vm.$parent.todos.filter(function (todo) {
+        return todo.id !== vm.todo.id
+      })
+    }
+  },
+  template: `
+    <span>
+      {{ todo.text }}
+      <button @click="removeTodo">
+        X
+      </button>
+    </span>
+  `
+})
+```
+``` javascript
+// 올바른 예제
+	// $emit을 이용해 이벤트를 부모로 전달해 준다
+Vue.component('TodoItem', {
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    }
+  },
+  template: `
+    <input
+      :value="todo.text"
+      @input="$emit('input', $event.target.value)"
+    >
+  `
+})
+
+------------------------------------------------
+
+Vue.component('TodoItem', {
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    }
+  },
+  template: `
+    <span>
+      {{ todo.text }}
+      <button @click="$emit('delete')">
+        X
+      </button>
+    </span>
+  `
+})
+```
 
 
+### 전역 상태 관리
+* Vuex는 this.$root나 전역 이벤트 버스가 아닌 전역 상태 관리가 우선되어야한다
+* this.$root와 전역 이벤트 버스를 사용하면 매우 간단한 경우 편리할 수 있지만 대부분의 앱에서 적합하지 않다
+* Vuex는 state를 관리 할 수 있는 파일 뿐아니라 state의 변경을 구성, 추적, 디버깅 하는 도구도 제공한다
+```javascript
+// 잘못된 예제
+	// main.js
+new Vue({
+  data: {
+    todos: []
+  },
+  created: function () {
+    this.$on('remove-todo', this.removeTodo)
+  },
+  methods: {
+    removeTodo: function (todo) {
+      var todoIdToRemove = todo.id
+      this.todos = this.todos.filter(function (todo) {
+        return todo.id !== todoIdToRemove
+      })
+    }
+  }
+})
 
+```
+
+``` javascrip
+// 올바른 예제
+	// store/modules/todos.js
+export default {
+  state: {
+    list: []
+  },
+  mutations: {
+    REMOVE_TODO (state, todoId) {
+      state.list = state.list.filter(todo => todo.id !== todoId)
+    }
+  },
+  actions: {
+    removeTodo ({ commit, state }, todo) {
+      commit('REMOVE_TODO', todo.id)
+    }
+  }
+}
+
+
+	<!-- TodoItem.vue -->
+<template>
+  <span>
+    {{ todo.text }}
+    <button @click="removeTodo(todo)">
+      X
+    </button>
+  </span>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: mapActions(['removeTodo'])
+}
+</script>
+```
 
