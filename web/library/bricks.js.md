@@ -23,7 +23,7 @@ import Bricks from 'brick.js';
 
 2. bricksInstance 생성
 ``` javascript
-const bricksInstance = Bricks({
+let bricksInstance = Bricks({
 	container: '.bricks-vue',	// bricksInstance가 생성될 template
 	packed: 'data-packed',
 	sizes: [
