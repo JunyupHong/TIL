@@ -110,7 +110,167 @@ export default{
 
 ### 컴포넌트 작성
 * 컴포넌트는 부모-자식 관계에서 가장 일반적으로 사용하기 위한 것
-* 부모는 props로 자식에게 데이터를 전달하고, 자식은 emit events로 부모에게 메세지를 보낸다
+* 부모는 props로 자식에게 데이터를 전달하고, 자식은 events를 부모에게 보낸다($emit을 이용해 부모에게 특정 트리거를 보낼 수도 있다)
+
+
+
+- - - -
+
+
+## Props
+* props는 상위 컴포넌트의 정보를 전달하기 위한 사용자 지정 특성
+
+
+### props로 데이터 전달
+* 모든 컴포넌트 인스턴스에서는  자체 격리된 범위가 존재 (즉, 하위 컴포넌트의 템플릿에서 상위 데이터를 직접 참조할 수 없다)
+* data는 props옵션을 사용하여 하위 컴포넌트로 전달 될 수 있다
+* 하위 컴포넌트는 props 옵션을 사용해 수신할 것으로 기대되는 props를 명시적으로 선언해야한다
+``` javascript
+Vue.component('test-component', {
+	props: ['message'],
+	template: '<h1>{{ message }}</h1>'
+});
+```
+
+
+### camelCase vs kebab-case
+* HTML 속성은 대소문자를 구분하지 않으므로 템플릿을 사용할 때 camelCase prop 이름에 해당하는 kebab-case를 사용해야함
+``` javascript
+props: ['myMessage']
+
+// 템플릿에서 사용
+<component :my-message="메세지"></component>
+```
+
+### 동적 props
+* 정규 속성 표현식에 바인딩 하는것과 비슷하게 v-bind를 사용하여 부모의 데이터에 props를 동적으로 바인딩 할 수 있다
+* => 데이터가 상위에서 업데이트 될 때마다 하위 데이터로도 전달된다
+``` html
+// template
+	// v-bind를 이용한 동적 props
+<component :my-message="msg"></component>
+
+// script
+data() {
+	return { mes: '메세지' };
+}
+```
+
+
+* 객체의 모든 속성을 props로 전달하려면, 인자없이 v-bind를 사용
+``` html
+// script
+data() {
+	return{
+		todo: {
+			text: 'todoText',
+			isComplete: false
+		}
+	};
+}
+
+// template
+<component v-bind="todo"></component>
+	// 같다
+<component v-bind:text="todo.text" v-bind:is-complete="todo.isComplete"></component>
+```
+
+### 리터럴 vs 동적
+``` html
+// 리터럴 prop 이기 때문에 문자열 "1"이 전달
+<component numberProp="1"></component>
+
+// v-bind를 사용해 JavaScript 표현식으로 표현 -> 숫자 1이 전달
+<component :numberProp="1"></component>
+```
+
+### 단방향 데이터 흐름
+* 모든 props는 하위 속성과 상위 속성 사이의 단방향 바인딩을 형성
+	* => 상위 속성이 업데이트 되면 하위로 흐른다 (반대는 불가)
+	* => 하위 컴포넌트가 실수로 부모의 상태를 변경하여 앱의 데이터 흐름을 추런하기 어렵게 만드는 것을 방지할 수 있다
+* 하위 컴포넌트에서 props를 변경시켜야 하는경우
+	1. prop은 초기 값을 전달 하는데만 사용하고 하위 컴포넌트는 이후에 이것을 로컬 데이터 속성으로 사용
+	* 해결 => prop의 초기 값을 초기 값으로 사용하는 로컬 데이터 속성을 정의
+``` javascript
+props: ['initialData'],
+data() {
+	return{
+		initData: this.initialData
+	};
+}
+```
+
+	2. prop은 변경 되어야 할 원시 값으로 전달
+	* 해결 => prop 값으로부터 계산된 속성을 정의
+``` javascript
+props: ['size'],
+computed: {
+	normalizedSize: function () {
+		return this.size.trim().toLowerCase();
+	}
+}
+```
+
+
+> 자바 스크립트의 객체와 배열은 참조로 전달(call by reference)되므로 prop이 배열이나 객체인 경우 하위 객체 또는 배열 자체를 부모 상태로 변경하면 부모 상태에 영향을 준다  
+
+
+
+### prop 검증
+* 컴포넌트가 prop에 대한 요구사항을 지정할 수 있다
+* 요구사항이 충족되지 않으면 Vue에서 경고를 보냄
+* props를 문자열 배열로 정의하는 대신 유효성 검사 요구사항이 있는 객체를 사용
+``` javascript
+props: {
+		// propA의 타입은 Number 이어야함
+	propA: Number,
+
+		// propB의 타입은 String 또는 Number
+	propB: [String, Number],
+
+		// propC의 타입은 String이고 propC는 반드시 필요
+	propC: {
+		type: String,
+		require: true
+	},
+
+		// propD의 타입은 Number, 바인딩되지않으면 10의 기본값을 가짐(반드시 필요하진 않음)
+	propD: {
+		type: Number,
+		default: 10
+	},
+
+		// propE의 타입은 Object
+		// 객체와 배열의 기본값은 팩토리함수에서 리턴되어야함
+	propE: {
+		type: Object,
+		default: function() {
+			return { message: 'msg' };
+		}
+	},
+
+		// 사용자 정의 유효성 검사 가능
+	propF: {
+		validator: function(value) {
+			return value > 10
+		}
+	}
+}
+```
+* type은 다음 네이티브 생성자 중 하나를 사용할 수 있다
+	* String
+	* Number
+	* Boolean
+	* Function
+	* Object
+	* Array
+	* Symbol
+
+* type은 커스텀 생성자가 될 수 있고, assertion은 instance 체크로 만들어질 것이다
+* props 검증이 실패하면 Vue는 콘솔에서 경고를 출력
+* props는 컴포넌트 인스턴스가 생성되기 전에 검증되기 때문에 default나 validator 함수 내에서 data, computed 또는 methods와 같은 인스턴스 속성을 사용할 수 없다
+
+
 
 
 
