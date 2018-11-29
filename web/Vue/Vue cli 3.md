@@ -22,6 +22,7 @@ by default): Sass/SCSS
 	* SPA: Single Page Application
 	* PWA: 웹의 장점과 앱의 장점을 결합한 환경
 	* ESLint + Prettier: Vue에서 prettier를 채택
+	* 템플릿 저장하기 => 템플릿을 저장하면 나중에 설정할 때 `-p 저장한 템플릿 이름` 옵션을 이용해 불러올 수 있다
 	
 
 
@@ -30,6 +31,7 @@ by default): Sass/SCSS
 	* `$ vue init hyunwoo/vue-template`
 * version 3 에서는 Vue에서 템플릿을 통일했다 (create로 사용)
 	* `$ vue create <appName>`
+	* 저장된 템플릿 불러오기 `$ vue create <appName> -p <저장된 템플릿 이름>`
 
 * version 3 에서는 init 대신 create를 사용한다
 	* init을 사용하려면 `$ npm install @vue/cli-init -g`로 init을 추가해준다!
