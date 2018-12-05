@@ -1,29 +1,7 @@
 # Vue cli 3
 ## 설치
 * `$ npm install -g @vue/cli`
-* npm 설정
-```
-? Please pick a preset: Manually select features
-? Check the features needed for your project: Babel, Router, Vuex, CSS Pre-proce
-ssors, Linter
-? Use history mode for router? (Requires proper server setup for index fallback 
-in production) Yes
-? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported 
-by default): Sass/SCSS
-? Pick a linter / formatter config: Prettier
-? Pick additional lint features: Lint on save, Lint and fix on commit
-? Where do you prefer placing config for Babel, PostCSS, ESLint, etc.? In package.json
-? Save this as a preset for future projects? No
-```
-	* Vuex: 여러 컴포넌트에서 데이터를 관리하기 위한 것
-	* CSS Pre-processor: 전처리기 / css를 sass와 scss로 처리 하기위함
-	* e2e: end to end test / Java VM 위에서 chrome을 띄워서 테스트해줌
-	* Use history mode for router: 라우터에서 앞으로가기, 뒤로가기를 구현
-	* SPA: Single Page Application
-	* PWA: 웹의 장점과 앱의 장점을 결합한 환경
-	* ESLint + Prettier: Vue에서 prettier를 채택
-	* 템플릿 저장하기 => 템플릿을 저장하면 나중에 설정할 때 `-p 저장한 템플릿 이름` 옵션을 이용해 불러올 수 있다
-	
+
 
 
 ## 템플릿
@@ -36,6 +14,30 @@ by default): Sass/SCSS
 * version 3 에서는 init 대신 create를 사용한다
 	* init을 사용하려면 `$ npm install @vue/cli-init -g`로 init을 추가해준다!
 
+
+### 템플릿 설정
+* `$ vue create <appName>`하면 설정이 나온다
+```
+? Please pick a preset: Manually select features
+? Check the features needed for your project: Babel, Router, Vuex, CSS Pre-proce
+ssors, Linter
+? Use history mode for router? (Requires proper server setup for index fallback 
+in production) Yes
+? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported 
+by default): Sass/SCSS
+? Pick a linter / formatter config: Prettier
+? Pick additional lint features: Lint on save, Lint and fix on commit
+? Where do you prefer placing config for Babel, PostCSS, ESLint, etc.? In package.json
+? Save this as a preset for future projects? No
+``````
+* Vuex: 여러 컴포넌트에서 데이터를 관리하기 위한 것
+* CSS Pre-processor: 전처리기 / css를 sass와 scss로 처리 하기위함
+* e2e: end to end test / Java VM 위에서 chrome을 띄워서 테스트해줌
+* Use history mode for router: 라우터에서 앞으로가기, 뒤로가기를 구현
+* SPA: Single Page Application
+* PWA: 웹의 장점과 앱의 장점을 결합한 환경
+* ESLint + Prettier: Vue에서 prettier를 채택
+* 템플릿 저장하기 => 템플릿을 저장하면 나중에 설정할 때 `-p 저장한 템플릿 이름` 옵션을 이용해 불러올 수 있다
 
 ## vue ui
 * Vue 프로젝트 매니저
@@ -50,8 +52,6 @@ by default): Sass/SCSS
 	* state를 볼 수 있다
 	* console을 볼 수 있다
 
-
-
 ## Vuetify
 ### 컴포넌트
 * Vue 에서 컴포넌트는 Vue 안에서 사용하는 페이지 단위에서 사용 `Vue.component()`
@@ -65,7 +65,6 @@ by default): Sass/SCSS
 * material icons를 추가하는 것은 코드에서 플러그인을 추가하는것
 * Vuetify는 터미널에서 추가 해줌 => 아예 세팅을 바꿔준다
 * https://vuetifyjs.com : 필요한 ui 컴포넌트들이 들어있다 (아직 pug지원 X)
-
 
 ### Vuetify 설치
 * `$ vue add vuetify`
@@ -99,13 +98,3 @@ added 10 packages from 46 contributors in 14.679s
 
    You should review these changes with git diff and commit them.
 ```
-
-
-
-
-
-
-
-
-
-
