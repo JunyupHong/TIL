@@ -22,7 +22,7 @@
 	* vbase: vue초기 세팅 매크로 (template, script, style이 적용됨)
 	* vmethod: method 사용 매크로 등등
 	* IDE에서 Preferences: Configure User Snippets를 검색해서 새로운 snippet을 추가해서 직접 매크로를 만들 수 있다
-	* Vue snippet 세팅: [VSCODE Sass, Vue, Vue Snippet 세팅하기 – Vue.js 한국 사용자 모임](http://vuejs.kr/jekyll/update/2017/02/21/vscode-vue-development-settings/)
+	* Vue snippet 세팅: [VSCODE Sass, Vue, Vue Snippet 세팅하기 – Vue.js 한국 사용자 모임](http://vuejs.kr/jekyll/update/2017/02/21/vscode-vue-development-settings/) => $는 매크로 입력시 커서가 있는 위치(순서대로) => $1 에서 $2로 변경하려면 tab을 누르면 된다!
 
 * TSLint
 	* TypeScript의 lint
