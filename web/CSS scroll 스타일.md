@@ -1,7 +1,7 @@
 # CSS scroll 스타일
 ## IE의 scroll 스타일
 * 스크롤의 색만 바꿀수 있다
-``` sass
+```sass
 	scrollbar-base-color: #000;
 	scrollbar-face-color: #000;
 	scrollbar-3dlight-color: #000;
@@ -12,15 +12,14 @@
 	scrollbar-dark-shadow-color: #000;
 ```
 
-* ![ie_scrollbar](https://user-images.githubusercontent.com/39546874/48771956-3d5ea680-ed06-11e8-936a-7acde4662679.png)
+* ![ie_scrollbar](https://user-images.githubusercontent.com/39546874/49569983-ccabc100-f978-11e8-8f25-6e6da8ce3e68.png)
 
 * `-ms-overflow-style: -ms-autohiding-scrollbar`을 사용하면 스크롤바 자동 숨기기가 된다 (스크롤이 활성화 될때만 나타남)
 
 - - - -
-
 ## Safari & Chrome의 scroll 스타일
 * 스크롤의 스타일을 바꿀 수 있다 (색상, 크기 등)
-``` sass
+```sass
 // 스크롤바 전체 영역
 ::-webkit-scrollbar
 	width: 5px
@@ -54,9 +53,8 @@
 ::-webkit-resizer
 ```
 
-
 * 가상 선택자
-``` sass
+```sass
 // 좌우 스크롤바의 모든 요소에 적용
 :horizontal
 // 상하 스크롤바의 모든 요소에 적용

@@ -1,22 +1,20 @@
 # Vue 인스턴스 생명주기
 ## 생명주기 (Life Cycle)
-* _인스턴스의 상태에 따라서 호출할 수 있는 속성들_ 을 생명주기라고 한다
+* **인스턴스의 상태에 따라서 호출할 수 있는 속성들** 을 생명주기라고 한다
 * Vue 인스턴스는  (beforeCreate, created, beforeMounte, mounted, beforeUpdate, updated, beforeDestroy, destroyed) 8개의 생명주기를 가진다
 
 ## 라이프 사이클 훅 (Life Cycle Hook)
-* _생명주기의 각 속성마다 개발자가 추가한 커스텀 로직_ 을 라이프 사이클 훅이라고 한다
+* **생명주기의 각 속성마다 개발자가 추가한 커스텀 로직** 을 라이프 사이클 훅이라고 한다
 
 ## Vue 인스턴스 생명주기
 * Vue 인스턴스도 객체이기 때문에 생명주기를 가진다
 * 속성의 종류로는 beforeCreate, created, beforeMount, mounted, beforeUpdate, update, beforeDestroy, destroyed로 총 8개 이다
 * Vue 인스턴스 생명주기
-<img width="704" alt="vue_instance_lifecycle_kor" src="https://user-images.githubusercontent.com/39546874/45356306-e352ae00-b5fd-11e8-87d0-47f65ec6b2db.png">
-
+<img width="704" alt="vue_instance_lifecycle_kor" src="https://user-images.githubusercontent.com/39546874/49574164-17323b00-f983-11e8-8755-8a9c7fad4e10.png">
 
 ### beforeCreated
 * 인스턴스가 생성되고 나서 가장 처음으로 실행되는 라이프 사이클 단계
 * 뷰 인스턴스의 data와 methods 속성이 정의되어 있지않고 DOM에도 접근할 수 없다
-
 
 ### created
 * 뷰 인스턴스의 data 속성과 methods 속성이 정의되어 있다(두 속성에 접근 가능)
@@ -50,12 +48,3 @@
 ### destroyed
 * 뷰 인스턴스가 destroy되고 난 후 호출되는 단계
 * 뷰 인스턴스에 정의한 모든 속성이 제거되고 하위에 선언했던 인스턴스들 역시 모두 destroy 된다
-
-
-
-
-
-
-
-
-
