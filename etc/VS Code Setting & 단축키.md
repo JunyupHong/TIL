@@ -27,8 +27,13 @@
 * TSLint
 	* TypeScript의 lint
 
+* Add jsdoc comments
+	* 주석을 자동으로 달아준다
+	* 사용: 함수의 첫 줄을 드래그하고 IDE 명령으로 Add Doc Comment를 실행하면 된다
+
 * vscode-icons
 	* icon 형태를 변경
+
 
 
 
