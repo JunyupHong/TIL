@@ -38,8 +38,9 @@
 
 
 ## VS Code 프로젝트 생성하기
-1. 프로젝트 생성
-2. npm 세팅
+1. 프로젝트 폴더 생성
+
+2. npm 세팅 (직접세팅하는 방법)
 * `$ npm init`
 * package.json을 만든다
 * 모든 node 프로젝트들은 package.json으로 돌아간다!
@@ -70,6 +71,11 @@ package name: (first-ts)	// 프로젝트 이름
 
 	Is this OK? (yes) 
 ```
+
+2. npm 세팅 (만들어진 세팅을 가져오는 방법)
+* `$ git clone https://github.com/hyunwoo/typescript-library-starter <Project NAME>`
+* `$ npm install`
+* => 아래 순서를 진행할 필요가 없다
 
 3. dist, src 폴더 생성
 
