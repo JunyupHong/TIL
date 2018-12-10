@@ -75,7 +75,8 @@ package name: (first-ts)	// 프로젝트 이름
 2. npm 세팅 (만들어진 세팅을 가져오는 방법)
 * `$ git clone https://github.com/hyunwoo/typescript-library-starter <Project NAME>`
 * `$ npm install`
-* => 아래 순서를 진행할 필요가 없다
+* => 아래 3,4,5번 순서를 진행할 필요가 없다 (6번 ts-node만 설치)
+* git repository는 따로 설정해주어야함 (.git파일만 생성되어있음)
 
 3. dist, src 폴더 생성
 
@@ -104,6 +105,12 @@ package name: (first-ts)	// 프로젝트 이름
 >   
 > **< npx >**  
 > node_modules에 있는 모듈을 쓸 수 있게 해주는 라이브러리  
+
+6. ts-node 설치
+* `$ npm install ts-node --save-dev`
+* ts파일을 javascript파일로 변환을 하지않고 바로 실행시켜준다
+* 사용법
+	* `$ npx ts-node tsFile.ts`
 
 
 ## 단축키
