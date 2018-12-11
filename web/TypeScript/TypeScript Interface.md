@@ -161,6 +161,195 @@ let mySquare = createSquare(squareOptions)
 
 
 
+## 함수 타입
+* 인터페이스는 JavaScript 객체가 취할 수 있는 다양한 형태로 설명할 수 있다
+* 프로퍼티를 가진 객체를 설명하는 것 외에도 인터페이스는 **함수 타입을 정의** 할 수 있다 => 함수타입을 정의하기 위해 인터페이스를 사용할 수 있다
+
+* TypeScript는 인터페이스에 있는 함수 타입을 정의하기 위해 Call signature인터페이스를 제공한다
+	* Call signature interface: 파리미터 목록과 리턴타입만 있는 함수 선언과 같다 (이때 파라미터는 이름과 타입 모두 필요)
+``` typescript
+// call signature interface
+interface SearchFunc {
+	(source:string, subString:string):boolean
+}
+```
+
+* 정의되면 다른 인터페이스처럼 함수 타입 인터페이스를 사용할 수 있다
+	* 함수 타입이 올바른지 확인하기 위해 파라미터의 이름이 같을 필요는 없다 => 서로 대응하는 파라미터의 위치와 타입이 Check 된다
+``` typescript
+// 함수타입의 변수 할당
+let mySearch: SearchFunc
+
+// 같은 타입의 함수를 할당
+	// 파라미터의 이름이 달라도 된다 => 위치와 타입이 같으면 된다
+mySearch = function(src: string, subStr: string) {
+	let result = src.search(subStr)
+	return result > -1
+}
+```
+
+* 파라미터 타입을 지정하지 않아도 된다
+	* 타입을 지정하지 않은 경우 TypeScript의 Contextual typing이 함수 SearchFunc 타입의 파라미터에 직접 지정되므로 파라미터 타입을 유추할 수 있다
+* 함수 표현식의 리턴 타입은 리턴 값에 의해 암묵적으로 유추된다
+``` typescript
+// 함수타입의 변수 할당
+let mySearch: SearchFunc
+
+// 같은 타입의 함수를 할당
+	// 파라미터 타입을 적어주지 않아도 된다 => Typescript가 유추가능
+	// 함수 표현식의 리턴타입은 리턴값에 의해 암묵적으로 유추됨
+mySearch = function(src, subStr) {
+	let result = src.search(subStr)
+	return result > -1
+}
+```
+
+
+## Indexable 타입
+* 인터페이스는 **인덱싱할 수 있는 타입을 정의**할 수있다
+	* 인덱싱 할 수 있는 타입: number, string
+* Indexable type에는
+	* 인덱싱할 때 대응되는 리턴타입과
+	* 객체에 대해 인덱싱하는데 사용할 수 있는 타입을 설명할 수 있는 Index signature가 있다
+> Index signature  
+> [index: type]: returnType  
+``` typescript
+// Index signature를 갖는 인터페이스
+	// StringArray가 number로 인덱스 될 때 string을 리턴한다는 것을 나타냄
+interface StringArray {
+	[index: number]: string
+}
+
+let myArray: StringArray
+myArray = ["Bob", "Fred"]
+let myStr: string = myArray[0]
+```
+
+* Index signature에 지원되는 타입은 string과 number이다
+* 두 가지 타입의 인덱서를 모두 지원하는 경우에는 number인덱서에서 리턴된 형태는 string인덱서에서 리턴된형태의 하위 형태여야한다
+	* => 숫자를 사용하여 index를 생성할때 JavaScript가 객체로 indexing하기 전에 실제로 문자열로 변환하기 때문
+``` typescript
+class Animal {
+	name: string
+}
+class Dog extends Animal {
+	breed: string
+}
+
+// number가 string으로 변환되므로
+// number로 인덱싱하는것은 string으로 인덱싱하는 것과 같아진다
+	// 결국 Animal은 Dog에 할당되는데
+	// Animal은 Dog에 할당 될 수 없으므로 에러발생
+interface NotOkay {
+	[x: number]: Animal	// error!
+	[x: string]: Dog
+}
+```
+
+* 문자열 Index signature은 Dictionary pattern을 설명하는 강력한 방법
+	* 모든 프로퍼티가 리턴 타입과 일치해야함
+	* 	=> 문자열 인덱스 obj.property가 obj[“property”]로 사용가능하다는 것이 선언되기 때문
+``` typescript
+// 리턴 타입: number
+interface NumberDictionary {
+	[index: string]: number;
+	length: number;    // ok, length is a number
+	name: string;      // error, 'name'의 타입은 인덱서의 하위 타입이 아닙니다.
+}
+```
+
+* 인덱스에 할당하지 못하도록 Index signature를 읽기 전용으로 만들 수 있다
+``` typescript
+interface ReadonlyStringArray {
+	readonly [index: number]: string
+}
+let myArray: ReadonlyStringArray = ["Alice", "Bob"]
+
+myArray[2] = "Mallory" // error! 읽기전용이므로 할당할 수 없다
+```
+
+
+
+## 클래스 타입
+### Interface 구현
+* Interface의 가장 일반적인 방법: 클래스가 특정 계약을 준수하도록 명시적으로 적용하는 것
+``` typescript
+interface ClockInterface {
+	currentTime: Date
+}
+class Clock implements ClockInterface {
+	currentTime: Date
+	constructor(h: number, m: number) {
+		currentTime = new Date()
+	}
+}
+```
+
+* 클래스에 구현된 인터페이스의 메소드를 설명할 수 있다
+``` typescript
+interface ClockInterface {
+	currentTime: Date
+	setTime(d: Date):void
+}
+class Clock implements ClockInterface {
+	currentTime: Date
+	setTime(d: Date) {
+		this.currentTime = d
+	}
+	constructor(h: number, m: number) {
+		currentTime = new Date()
+	}
+}
+```
+
+* 인터페이스는 클래스의 public만을 정의할 수 있다
+	* =>클래스를 사용하여 인스턴스의 private에 특정 타입이 있는지 확인할 수 없다
+
+## 클래스의 static과 instance의 차이점
+* 클래스에는 Static 측면의 타입과 Instance 측면의 타입 두가지 유형이 있다 => 클래스와 인터페이스로 작업할때 중요
+
+* Construct signature (=new)를 사용하여 인터페이스를 만들고 이 인터페이스를 Implements하는 클래스를 만들려고 하면 오류가 발생
+	* 클래스가 인터페이스를 implement할때 클래스의 Instance적인 면만 검사하기 때문
+	* 생성자는 Static 측면에 있으므로 이 검사에 포함되지 않는다
+	* => 클래스의 Static 측면에서 작업해야함
+``` typescript
+interface ClockConstructor {
+	new (hour: number, minute: number)
+}
+class Clock implements ClockConstructor {
+	currentTime: Date
+	constructor(h: number, m: number) {
+	}
+}
+```
+
+* 클래스의 Static인 측면에서 작업
+``` typescript
+interface ClockConstructor {
+	new (hour: number, minute: number): ClockInterface
+}
+interface ClockInterface {
+	tick()
+}
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+	return new ctor(hour, minute);
+}
+class DigitalClock implements ClockInterface {
+	constructor(h: number, m: number) { }
+	tick() {
+		console.log("beep beep")
+	}
+}
+class AnalogClock implements ClockInterface {
+	constructor(h: number, m: number) { }
+	tick() {
+		console.log("tick tock")
+	}
+}
+let digital = createClock(DigitalClock, 12, 17)
+let analog = createClock(AnalogClock, 7, 32)
+```
+
 
 
 
