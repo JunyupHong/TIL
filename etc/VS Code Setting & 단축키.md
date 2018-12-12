@@ -118,7 +118,8 @@ package name: (first-ts)	// 프로젝트 이름
 * `command + shift + p`	: IDE 자체에 명령
 * `command + ,`			: settings
 * `ctrl + shift +  ₩` or `아래부분 스크롤` : terminal
-* `Command + k + s`		: Keyboard shortcut
+* `command + k + s`		: Keyboard shortcut
+* `command + .`			: suggestion 보여주기
 
 
 
