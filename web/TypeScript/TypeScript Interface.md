@@ -100,8 +100,8 @@ arr = roArr; // error!
 // readonlyArray<> 타입으로 재할당 가능
 roArr = roArr2
 
-// Type Assertion으로 Override
-a = ro as number[];
+// Type Assertion으로 Override 가능
+arr = roArr as number[];
 ```
 
 ### readonly vs const
@@ -110,7 +110,7 @@ a = ro as number[];
 
 
 ## 프로퍼티 접근 체크
-* Type-checker의  ‘argument의 형태가 구현하려는 인터페이스의 형태와 같으면 된다’ 는 것과 Optional property 두가지를 결합하면 아래의 코드는 컴파일타임에 에러가 발생하지 않는다
+* Type-checker의  ‘argument의 형태가 구현하려는 인터페이스의 형태와 같으면 된다’ 는 것과 Optional property 두가지를 결합하면 아래의 코드는 컴파일타임에 에러가 발생하지 않을것같다!
 	* 전달인자 colord와 width는 선택 프로퍼티 이고
 	* 실제 넘겨주는 인자는 colour와 width이므로 width는 호환가능한 속성, color은 없는 속성, colour는 여분의 colour 속성이 된다
 	* => 따라서 문제가 발생하지 않아야한다
@@ -306,12 +306,14 @@ class Clock implements ClockInterface {
 	* =>클래스를 사용하여 인스턴스의 private에 특정 타입이 있는지 확인할 수 없다
 
 ## 클래스의 static과 instance의 차이점
-* 클래스에는 Static 측면의 타입과 Instance 측면의 타입 두가지 유형이 있다 => 클래스와 인터페이스로 작업할때 중요
+* 클래스에는 Static 측면의 타입과 Instance 측면의 타입 두가지 유형이 있다 => 클래스와 인터페이스로 작업할때 알고있어야함
 
-* Construct signature (=new)를 사용하여 인터페이스를 만들고 이 인터페이스를 Implements하는 클래스를 만들려고 하면 오류가 발생
+* Construct signature (=`new()`)를 사용하여 인터페이스를 만들고 이 인터페이스를 Implements하는 클래스를 만들려고 하면 오류가 발생
 	* 클래스가 인터페이스를 implement할때 클래스의 Instance적인 면만 검사하기 때문
 	* 생성자는 Static 측면에 있으므로 이 검사에 포함되지 않는다
 	* => 클래스의 Static 측면에서 작업해야함
+> static측면: Dog => 생성자  
+> Instance측면: dog = new Dog(); 해서 dog.으로 쓰는것  
 ``` typescript
 interface ClockConstructor {
 	new (hour: number, minute: number)
@@ -351,6 +353,105 @@ let analog = createClock(AnalogClock, 7, 32)
 ```
 
 
+## 인터페이스 상속
+* class 처럼 interface도 인터페이스 끼리 상속이 가능하다
+* 인터페이스의 구성원을 다른 인터페이스로 복사할 수 있으므로 인터페이스를 재사용 가능한 구성 요소로 분리하는 방법을 보다 유연하게 사용할 수 있다
+``` typescript
+interface Shape {
+	color: string
+}
+
+interface Square extends Shape {
+	sideLength: number
+}
+
+let square = <Square>{}
+square.color = "blue"
+square.sideLength = 10
+```
+
+* 여러 인터페이스를 상속할 수 있다
+``` typescript
+interface Shape {
+	color: string
+}
+interface PenStroke {
+	penWidth: number
+}
+interface Square extends Shape, PenStroke {
+	sideLength: number
+}
+
+let square = <Square>{}
+square.color = "blue"
+square.sideLength = 10
+square.penWidth = 5.0
+```
+
+## Hybrid Type (결합타입)
+* JavaScript의 유연한 특성으로 인해 여러 타입의 조합으로 작동하는 객체가 생성될 수 있다
+
+* 아래 예제는 함수와 객체의 역할을 모두 수행하는 객체
+``` typescript
+interface Counter {
+	// call signature => 함수 선언과 같다(=> 함수 역할) 
+	(start: number): string
+
+	// 객체 역할
+	interval: number
+	reset(): void
+}
+function getCounter(): Counter {
+	let counter = <Counter>function (start: number) {}
+	counter.interval = 123
+	counter.reset = function () {}
+	return counter
+}
+
+let c = getCounter()
+c(10)
+c.reset()
+c.interval = 5.0
+```
+
+
+## 클래스 상속 인터페이스
+* 인터페이스는 클래스를 extends 할때 클래스 속성을 상속하지만  Implements 된 내용은 상속되지 않는다
+* => 인터페이스가 Implements를 제공하지 않고 클래스의 모든 멤버를 선언한 것과 같다
+
+* 인터페이스는 기본 클래스의 private, protected 변수도 상속한다
+* => private나 protected 변수가 있는 클래스를 상속하는 인터페이스를 만들면 해당 인터페이스 유형은 해당 클래스 또는 해당 클래스의 하위 클래스에서만 implements할 수 있다
+``` typescript
+class Control {
+	private state: any;
+}
+interface SelectableControl extends Control {
+	select(): void;
+}
+
+class Button extends Control implements SelectableControl {
+	select() {}
+}
+class TextBox extends Control {
+	// SelectableControl을 implements하지 않았기 때문에
+	// select 함수를 구현하지 않아도 된다
+}
+class NumberBox extends Control {
+	select() {}
+}
+
+// error! Control을 상속하지 않으므로 에러가 난다 (Control에 private 변수가 있으므로)
+class Image2 implements SelectableControl {
+	select() {}
+}
+```
+	* SelectableControl은 Control의 모든 멤버를 포함한다(private 속성 포함)
+	* state는 private 멤버이기 때문에 Control의 자손만 SelectableControl을 구현할 수 있다 => Control의 자손들만이 같은 선언에서 유래된 private 속성을 가질 것이기 때문 (private 멤버들이 호환 가능해야 한다는 요구 사항)
+
+	* Control 클래스 안에서 SelectableControl 인스턴스를 통해 private state 멤버에 접근할 수 있다
+	* 효율적으로 SelectableControl은 select 메소드를 가진 것으로 알려진 Control과 같은 역할을 한다 (명시적으로 알려줌)
+
+	* Button과 NumberBox 클래스는SelectableControl의 하위 타입이다 => Control을 상속 받았고 select 메소드를 가졌기 때문
 
 
 
