@@ -214,9 +214,10 @@ define(['jquery', 'lodash'], function(j, l) {
 ```
 
 ### System.register
-* ES5에서 ES6 모듈 문법을 지원하기 위해 설계된 모듈 형식
+* ES5에서 ES6 모듈 문법(export & import)을 지원하기 위해 설계된 모듈 형식
 
 #### 작동원리
+* es6 모듈을 es5로 컴파일 할때 아래 코드는 babel에 의해서 변경된다
 ``` javascript
 import { p as q } from './dep';
  var s = 'local';
@@ -229,7 +230,7 @@ export class C {
 }
 ```
 
-
+* 이렇게 변경됨
 ``` javascript
 System.register(['./dep'], function($__export, $__moduleContext) {
 	var s, C, q;
@@ -254,6 +255,59 @@ System.register(['./dep'], function($__export, $__moduleContext) {
 	};
 });
 ```
+
+
+
+### ES6의 모듈
+* ES6 모듈은 기본적으로 CommonJS와 AMD 모듈을 혼용해서 사용할 수 있다
+* => require와 import를 같이 쓰더라도 문제 없이 동작한다
+* ES6의 import & export 문법을 사용
+* babel과 같은 트랜스파일러가 있어야 브라우저에서 지원이 가능하다! (es6이전 버전에 대한 지원)
+
+#### export
+``` javascript
+// 모듈 전체를 export 하는 방법, 파일내 한번만 사용가능
+var module = {};
+export default module
+	// 또는
+export default {
+	// ...
+}
+
+// 모든 속성을 export 하는 방법
+export *;
+
+// 함수를 직접 export 하는 방법
+export function moduleFunc() {};
+var property = "some property";
+export { property };
+```
+
+#### import
+``` javascript
+// 모듈 전체를 import 하는 방법
+	// as뒤에 사용할 모듈의 이름을 설정 해줄 수 있다
+import module;
+import module as myModule;
+
+
+// 모든 속성을 import 하는 방법
+import * from 'path/module';
+
+
+// 특정 멤버(함수 등)만 import
+import { moduleFunc, moduleFunc2 } from 'path/module';
+import { moduleFunc as firstFunc, moduleFunc2 } from 'path/module';
+```
+
+> 모듈을 여러가지 형태를 혼용해서 사용하는 것도 가능하나 가급적 하나의 형태로 사용하는 것이 좋다!  
+
+
+
+
+
+
+
 
 
 
