@@ -23,7 +23,7 @@ let anonymousFunc = function() {
 let z = 100;
 function addToZ(x, y) {
 	// 함수 외부의 변수 z를 참조한다
-	return x + y + z;
+	return x + y + z
 }
 ```
 
@@ -78,14 +78,98 @@ let myAdd2: (baseValue:number, increment:number) => number = function(x, y) {
 ```
 
 
+## 파라미터
+### Optional & Default 파라미터
+* TypeScript에서는 모든 파라미터가 함수에 필요하다고 가정
+	* => 컴파일러는 함수가 호출될때 사용자가 파라미터에 값을 입력했는지 확인한다는 의미
+* 컴파일러는 파라미터들이 함수에만 전달되는 파라미터라고 가정
+	* => 함수에 주어진 파라미터의 수는 함수가 예상하는 파라미터의 수와 일치해야한다
+
+#### optional 파라미터
+* JavaScript에서는 파라미터가 선택사항 => 파라미터가 맞지않으면 undefined로 설정됨
+* TypeScript에서는 optional 파라미터를 ‘?’ 로 표시
+* 모든 optional 파라미터는 required 파라미터 다음에 나와야한다
+``` typescript
+function buildName(firstName: string, lastName?: string) {
+	if (lastName)
+		return firstName + " " + lastName
+	else
+		return firstName;
+}
+
+// 두번째 파라미터는 option
+let result1 = buildName("Bob")
+let result2 = buildName("Bob", "Adams")
+
+ // error 파라미터 갯수 초과
+let result3 = buildName("Bob", "Adams", "Sr.")
+```
+
+#### default 파라미터
+* 파라미터를 입력하지 않거나 파라미터 값 대신 undefined를 넣어도 파라미터가 할당될 값을 default 값으로 설정할 수 있다
+* == default-initialized 파라미터
+``` typescript
+function buildName(firstName: string, lastName = "Smith") {
+	return firstName + " " + lastName
+}
+
+let result1 = buildName("Bob")	// Bob Smith
+let result2 = buildName("Bob", undefined) // Bob Smith
+let result3 = buildName("Bob", "Adams") // Bob Adams
+
+// error 파라미터 갯수 초과
+let result4 = buildName("Bob", "Adams", "Sr.")
+```
+
+* required 파라미터 다음에 오는 default-initialized 파라미터는 optional 파라미터 처럼 취급
+	* => optional 파라미터처럼 해당함수를 호출 할 때 생략 가능
+```typescript
+// optional parameter
+function buildName(firstName: string, lastName?: string) {
+	// ...
+}
+
+// default-initialized parameter
+function buildName(firstName: string, lastName = "Smith") {
+	// ...
+}
+```
+
+* optional 파라미터와 달리 default-initialized 파라미터는 required 파라미터 다음에 올 필요가 없다
+* Required 파라미터 앞에 오는 경우 명시적으로 undefined를 전달해야함
+``` typescript
+function buildName(firstName = "Will", lastName: string) {
+	return firstName + " " + lastName
+}
+let result1 = buildName("Bob") // error lastName 파라미터가 없다
+let result2 = buildName("Bob", "Adams", "Sr.") //error 파라미터 갯수 초과
+
+let result3 = buildName("Bob", "Adams") // Bob Adams
+let result4 = buildName(undefined, "Adams") // Will Adams
+```
 
 
+### rest 파라미터
+* required 파라미터, optional 파라미터, default-initialized 파라미터는 한번에 하나의 파리미터에 대한 지정
+* 여러 파리미터를 그룹으로 사용하거나 함수가 궁극적으로 취할 파라미터를 모를때 rest 파라미터(‘…’)를 사용
 
+* JavaScript에서는 arguments 변수를 사용하여 파라미터를 직접 사용
+* TypeScript에서는 rest 파라미터를 사용해서 변수로 대입
+``` typescript
+function buildName(firstName: string, ...restOfName: string[]) {
+	return firstName + " " + restOfName.join(" ")
+}
+let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
+```
 
+* 함수 타입에서 rest파라미터 사용
+``` typescript
+function buildName(firstName: string, ...restOfName: string[]) {
+	return firstName + " " + restOfName.join(" ")
+}
+let buildNameFun: (fname: string, ...rest: string[]) => string = buildName;
 
-
-
-
+```
 
 
 
