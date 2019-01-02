@@ -29,3 +29,9 @@
 * 전역으로 설치하면 버전관리에 취약
 * 각 프로젝트의 환경설정을 전역이 아닌 각각의 프로젝트에서 구성해야함
 `$ npm i babel`
+
+
+
+
+## 참고 사이트
+[본격 macOS에 개발 환경 구축하기](https://subicura.com/2017/11/22/mac-os-development-environment-setup.html)
