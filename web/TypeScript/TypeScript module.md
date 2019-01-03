@@ -60,3 +60,18 @@ import B from "./formatter"
 B.number.getLength(1000)
 ```
 
+- - - -
+
+> **<TypeScript에서 module을 import 할때 컴파일 오류해결>**  
+> TypeScript에서 import 시 type에러가 날때가 있다  
+> 이때 tsconfig.json의 compilerOptions의 types에 모듈 이름을 넣어주면 된다!!  
+> ex) lodash, vuetify  
+
+
+
+
+
+
+
+
+
