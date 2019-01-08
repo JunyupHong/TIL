@@ -6,8 +6,142 @@
 	* 	settings (command + ,)에 가서 Prettier: Use tab 설정 끄기
 3. Keyboard shortcut(Command + k + s) 에서 format document 설정 바꾸기
 	* 	command + option + l 로 바꾸기
+4. user settings & workspace settings 설정
+	* quote style 설정을 전부 single로 변경
 
-4. extension 설치
+
+5. setting json 변경 (cmd + shift + p => settings 검색, json 파일 보기)
+``` json
+{
+  "typescript.locale": "ko",
+  // "editor.fontSize": 12,
+  // "terminal.integrated.lineHeight": 1.2,
+  "terminal.integrated.letterSpacing": 0.5,
+  // "terminal.integrated.fontSize": 12,
+  "terminal.integrated.fontWeight": "400",
+  "terminal.integrated.fontWeightBold": "600",
+  "terminal.integrated.fontFamily": "Monaco",
+  "editor.tabCompletion": "on",
+  "editor.fontFamily": "Monaco, Menlo, monospace",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  // "html/html-extensions": [".html"],
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    }
+  ],
+  // "markdown.preview.fontSize": 16,
+  // "rest-client.fontSize": 16,
+  "prettier.tslintIntegration": true,
+  "prettier.stylelintIntegration": true,
+  // "window.zoomLevel": 1,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "prettier.singleQuote": true,
+  "editor.formatOnPaste": true,
+  "prettier.useTabs": false,
+  "prettier.tabWidth": 2,
+  "tslint.exclude": ["**/*.js"],
+  "files.associations": {
+    "*.vue": "vue"
+  },
+  "html.format.wrapAttributes": "force-aligned",
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "force-aligned"
+    }
+  },
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": true
+}
+```
+
+5. vue.config.js 파일 변경
+	* devServer: {} => 외부에서 접근이 안될때가 있다! 이때 이 설정필요!
+	* baseURL: => 다른 프로젝트를 연결할때 기본 base url이 된다
+``` javascript
+devServer: {
+	host: '0.0.0.0',
+	disableHostCheck: true
+},
+  baseUrl: '/',
+  outputDir: undefined,
+  assetsDir: undefined,
+  runtimeCompiler: undefined,
+  productionSourceMap: undefined,
+  parallel: undefined,
+  css: undefined,
+```
+
+6. tsconfig.json 파일 변경
+	* ts 파일 설정
+``` json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "types": ["webpack-env"],
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
+```
+
+7. tslint.json 설정
+	* ts파일의 lint 설정
+``` json
+"rules": {
+	"quotemark": [true, "single"],
+}
+```
+
+8. .prettierrc 파일 생성 후 변경
+	* vue 파일의 prettier 설정
+``` json
+{
+  "singleQuote": true,
+  "trailing-comma": false,
+  "no-submodule-imports": false,
+  "no-console": false,
+  "no-implicit-dependencies": false
+}
+```
+
+9. extension 설치
 * Prettier - code formatter
 	* Lint의 한 종류
 
