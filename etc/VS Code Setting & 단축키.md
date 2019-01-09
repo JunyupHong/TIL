@@ -10,7 +10,7 @@
 	* quote style 설정을 전부 single로 변경
 
 
-9. extension 설치
+5. extension 설치
 * Prettier - code formatter
 	* Lint의 한 종류
 
@@ -179,23 +179,26 @@ package name: (first-ts)	// 프로젝트 이름
 
 2. vue.config.js 파일 변경
 	* devServer: {} => 외부에서 접근이 안될때가 있다! 이때 이 설정필요!
-	* baseURL: => 다른 프로젝트를 연결할때 기본 base url이 된다
+	* baseURL => `github.io`에서 페이지를 만들때 모든 repository가 연결되고 각각의 repository의 기본 base url이 된다 ex) `https://junyup0319.github.io/anotherproject`로 접속하면 baseUrl이 anotherproject 프로젝트가 띄워진다
 ``` javascript
-devServer: {
-	host: '0.0.0.0',
-	disableHostCheck: true
-},
+module.exports = {
+  devServer: {
+    host: '0.0.0.0',
+      disableHostCheck: true
+  },
   baseUrl: '/',
-  outputDir: undefined,
-  assetsDir: undefined,
-  runtimeCompiler: undefined,
-  productionSourceMap: undefined,
-  parallel: undefined,
-  css: undefined,
+	outputDir: undefined,
+	assetsDir: undefined,
+	runtimeCompiler: undefined,
+	productionSourceMap: undefined,
+	parallel: undefined,
+	css: undefined,
+}
 ```
 
 3. tsconfig.json 파일 변경
 	* ts 파일 설정
+	* `"noImplicitAny": false` 는 import 시 에러를 꺼주는 것
 ``` json
 {
   "compilerOptions": {
@@ -211,6 +214,7 @@ devServer: {
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "noImplicitAny": false,
     "types": ["webpack-env"],
     "paths": {
       "@/*": ["src/*"]
@@ -257,6 +261,8 @@ devServer: {
 * `ctrl + shift +  ₩` or `아래부분 스크롤` : terminal
 * `command + k + s`		: Keyboard shortcut
 * `command + .`			: suggestion 보여주기
+
+
 
 
 
