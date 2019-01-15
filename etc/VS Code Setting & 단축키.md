@@ -179,12 +179,14 @@ package name: (first-ts)	// 프로젝트 이름
 
 2. vue.config.js 파일 변경
 	* devServer: {} => 외부에서 접근이 안될때가 있다! 이때 이 설정필요!
+	* proxy => localhost가 아닌 외부에서의 접근(ex 192.168. ..)이 막힐때 사용
 	* baseURL => `github.io`에서 페이지를 만들때 모든 repository가 연결되고 각각의 repository의 기본 base url이 된다 ex) `https://junyup0319.github.io/anotherproject`로 접속하면 baseUrl이 anotherproject 프로젝트가 띄워진다
 ``` javascript
 module.exports = {
   devServer: {
     host: '0.0.0.0',
-      disableHostCheck: true
+    disableHostCheck: true,
+    proxy: 'http://localhost:8080'
   },
   baseUrl: '/',
 	outputDir: undefined,
