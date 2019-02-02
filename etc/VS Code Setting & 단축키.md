@@ -37,7 +37,8 @@
 * vscode-icons
 	* icon 형태를 변경
 
-
+* Import cost
+	* import하는 모듈, 라이브러리의 크기를 알려준다
 
 
 ## VS Code npm 프로젝트 생성하기
