@@ -1,4 +1,13 @@
 # JavaScript to TypeScript Migration
+## refs
+``` typescript
+$refs!: {
+    tagInput: HTMLFormElement,
+    tagField: HTMLFormElement
+}
+
+```
+
 
 ## Decorator
 ### Props
