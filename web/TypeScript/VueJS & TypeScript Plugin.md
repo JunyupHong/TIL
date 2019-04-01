@@ -1,4 +1,4 @@
-# VueJS & TypeScript - Plugin
+# VueJS & TypeScript Plugin
 
 ## 필요한것
 ### component.vue 파일
@@ -52,7 +52,7 @@ import Plugin from 'plugin.vue';
 
 // declare로 /vue/types/vue의 Plugin 인터페이스에 함수 등록 (타입지정)
 declare module '/vue/types/vue' {
-	interface Plugin extends Plugin {
+	interface Plugin extends Vue {
 		// Plugin의 함수들
 		// ex)
 		// open();
@@ -69,7 +69,7 @@ export default {
 		// 내부에서 dom을 생성 & 붙여줘야함
 
 		// pluginInstance를 Vue.prototype에 등록
-		if(Vue.prototype.$plugin != undefined) {
+		if(Vue.prototype.$plugin == undefined) {
 			// hot reload 방지를 위해서 조건문을 걸어줌
 			// 	(계속해서 pluginInstace가 정의되면 관리하기 어렵다)
 			Vue.prototype.$plugin = this.pluginInstance;
