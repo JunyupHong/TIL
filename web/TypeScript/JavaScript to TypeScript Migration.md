@@ -124,8 +124,16 @@ get disableGroup() {
 ```
 
 
+### debounce
+```typescript
+import { debounce } from 'typescript-debounce-decorator';
 
-
+@debounce(500)
+private searchImage() {
+  this.groups = [];
+  this.getMoreContents();
+}
+```
 
 
 
