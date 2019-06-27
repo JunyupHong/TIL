@@ -14,6 +14,8 @@
 * node 패키지 관리자
 * node를 설치하면 npm도 같이 설치됨
 `$ brew install node`
+* nvm 설치 (node의 버전관리를 위해) & 필요한 버전 추가
+`curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash`
 
 ### npx 설치
 * node_modules 안에 있는 모듈을 실행해 줄 수 있는 라이브러리
