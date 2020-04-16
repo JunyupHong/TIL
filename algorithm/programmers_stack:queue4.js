@@ -6,6 +6,7 @@ function solution(priorities, location) {
             idx: i,
         }
     });
+		
     const order = [];
     while(queue.length !== 0) {
         const j = queue.shift();
