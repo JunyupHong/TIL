@@ -1,29 +1,36 @@
 function solution(number, k) {
+    const result = [];
+    let leftCount = k;
     const numbs = [...number];
-    let idx = 0;
-    let count = 0;
-    while (count !== k) {
-        const curIdx = idx % number.length;
-        const nextIdx = (idx + 1) % number.length;
-        if (numbs[curIdx] < numbs[nextIdx]) {
-            numbs.splice(curIdx, 1);
-            count++;
-            idx--;
-        } else idx++;
+    
+    result.push(numbs[0]);
+    for (let i = 1; i < numbs.length; i++) {
+        const n = numbs[i];
+        while (leftCount > 0 && n > result[result.length - 1]) {
+            result.pop();
+            leftCount--;
+        }
+        result.push(n);
     }
-    return numbs.join('');
     
-//     const stack = [];
-//     let count = 0;
-
-//     while (numbs.length > 0) {
-//         stack.push(numbs.shift());
-//         while(stack[stack.length-1] < numbs[0]) {
-//             count++;
-//             stack.pop();
-//             if (count === k) return stack.concat(numbs).join('');
-//         }
-//     }
-    
-//     return stack.slice(0, stack.length - k).join('');
+    if (leftCount > 0) result.splice(result.length - leftCount, leftCount);
+    return result.join('');
 }
+
+
+/** Timeout이 나는 코드*/
+//function solution(number, k) {
+//    const numbs = [...number];
+//    let idx = 0;
+//    let count = 0;
+//    while (count !== k) {
+//        const curIdx = idx % number.length;
+//        const nextIdx = (idx + 1) % number.length;
+//        if (numbs[curIdx] < numbs[nextIdx]) {
+//            numbs.splice(curIdx, 1);
+//            count++;
+//            idx--;
+//        } else idx++;
+//    }
+//    return numbs.join('');    
+//}
