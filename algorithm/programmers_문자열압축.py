@@ -3,7 +3,7 @@ from functools import reduce
 def solution(s):
     answer = len(s)
     length = answer
-
+    
     for n in range(1, length+1):
         divided_str = list(filter(lambda ele: ele != '', [s[n*i : n*(i+1)] for i in range(length//n + 1)]))
         result = [divided_str[0]]
@@ -14,5 +14,6 @@ def solution(s):
                 result.extend([count, divided_str[i]])
                 count = 1
         result.append(count)
-        answer = min(answer, reduce(lambda acc, cur: acc + len(cur), list(map(str, list(filter(lambda ele: ele != 1, result)))), 0))
+        answer = min(answer, sum(list(map(lambda ele: len(str(ele)), list(filter(lambda ele: ele != 1, result))))))
+
     return answer
