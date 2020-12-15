@@ -4,7 +4,7 @@ for _ in range(int(input())):
 	count = 0
 	arr = list(filter(lambda ele: ele <= n, [1, 2, 3]))
 	
-	while True:
+	while len(arr) != 0:
 		count += arr.count(n)
 		arr = list(filter(lambda ele: ele != n, arr))
 		
@@ -17,7 +17,6 @@ for _ in range(int(input())):
 			if num + 3 <= n:
 				temp.append(num+3)
 		arr = temp
-		if len(arr) == 0: break
 
 	print(count)
 
