@@ -21,12 +21,12 @@ class Main {
 		}
 		
 		Arrays.sort(numbers);
-		combination(M, numbers, 0, new int[M], 0, new HashSet<String>());
+		permutation(M, numbers, 0, new int[M], new HashSet<String>());
 		System.out.println(sb.toString());
 	}
 	
 	
-	static void combination(int M, int[] numbers, int dest, int[] selected, int start, HashSet<String> set) {
+	static void permutation(int M, int[] numbers, int dest, int[] selected, HashSet<String> set) {
 		if (M == dest) {
 			if (!set.contains(Arrays.toString(selected))) {
 				set.add(Arrays.toString(selected));
@@ -39,7 +39,7 @@ class Main {
 		}
 		for (int i = 0; i < numbers.length; i++) {
 			selected[dest] = numbers[i];
-			combination(M, numbers, dest+1, selected, i, set);
+			permutation(M, numbers, dest+1, selected, set);
 		}
 	}
 }
