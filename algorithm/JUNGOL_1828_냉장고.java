@@ -16,13 +16,13 @@ class Main {
 		}
 		
 		Arrays.sort(materials, (a,b)->a[1]-b[1]);
-		
+
 		int cover = Integer.MIN_VALUE;
 		int count = 0;
 		for (int[] m : materials) {
 			if (cover >= m[0]) continue;
 			
-			if (cover < m[1]) {
+			if (cover < m[0]) {
 				cover = m[1];
 				count++;
 			}
