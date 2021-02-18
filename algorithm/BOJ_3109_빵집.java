@@ -1,11 +1,8 @@
-package com.ssafy.algo.ws0218;
-
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+class Main {
 	static int R;
 	static int C;
 	static String[][] map;
@@ -13,7 +10,6 @@ public class Main {
 	static int result;
 
 	public static void main(String[] args) throws IOException {
-		System.setIn(new FileInputStream("src/com/ssafy/algo/ws0218/input.txt"));
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		
 		String[] inputs = in.readLine().split(" ");
