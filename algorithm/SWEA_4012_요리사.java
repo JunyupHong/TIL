@@ -26,13 +26,13 @@ class Solution {
 					map[i][j] = Integer.parseInt(inputs[j]);
 			}
 			
-			combination(0, new HashSet<Integer>(), 0);
+			combination(new HashSet<Integer>(), 0);
 			sb.append("#").append(t).append(" ").append(gap).append("\n");
 		}
 		System.out.println(sb.toString());
 	}
 	
-	static void combination(int cnt, Set<Integer> selected, int start) {
+	static void combination(Set<Integer> selected, int start) {
 		if (selected.size() == N/2) {
 			int A = 0;
 			int B = 0;
@@ -48,7 +48,7 @@ class Solution {
 		
 		for (int i = start; i < N; i++) {
 			selected.add(i);
-			combination(cnt+1, selected, i+1);
+			combination(selected, i+1);
 			selected.remove(i);
 		}
 	}
