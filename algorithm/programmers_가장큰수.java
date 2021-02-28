@@ -6,7 +6,7 @@ class Solution {
         for (int n : numbers) {
             strings.add(Integer.toString(n));
         }
-        return strings.stream().sorted((a, b) -> {
+        String answer = strings.stream().sorted((a, b) -> {
             String s1 = b + a;
             String s2 = a + b;
             for (int i = 0; i < s1.length(); i++) {
@@ -15,5 +15,8 @@ class Solution {
             }
             return 0;
             }).reduce("", (acc, cur) -> acc + cur);
+        
+        if (answer.charAt(0) == '0') return "0";
+        else return answer;
     }
 }
