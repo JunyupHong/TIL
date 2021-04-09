@@ -1,73 +1,88 @@
+package SWEA;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Solution {
-	static int[] parents;
-	static int find(int idx) {
-		if (parents[idx] == idx) return idx;
-		return parents[idx] = find(parents[idx]);
-	}
-	static boolean union(int a, int b) {
-		int aRoot = find(a);
-		int bRoot = find(b);
-		if (aRoot == bRoot) return false;
-		
-		parents[bRoot] = aRoot;
-		return true;
-	}
-	static class Line implements Comparable<Line> {
-		public int start;
-		public int end;
-		public double weight;
-		public Line(int start, int end) {
-			this.start = start;
-			this.end = end;
-		}
-		@Override
-		public int compareTo(Line o) {
-			return Double.compare(this.weight, o.weight);
-		}
-	}
+public class Solution_1251_하나로 {
+	private static int N;
+	private static long[][] adjMatrix;
+	
 	public static void main(String[] args) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-		int T = Integer.parseInt(in.readLine());
 		
-		for (int tc = 1; tc <= T; tc++) {
-			int N = Integer.parseInt(in.readLine());
+		int TC = Integer.parseInt(in.readLine());
+		for (int tc = 1; tc <= TC; tc++) {
+			N = Integer.parseInt(in.readLine());
 			
-			parents = new int[N];
+			int[] x = new int[N];
+			int[] y = new int[N];
+			
+			String[] inputs = in.readLine().split(" ");
+			
 			for (int i = 0; i < N; i++) {
-				parents[i] = i;
+				x[i] = Integer.parseInt(inputs[i]);
 			}
 			
-			Line[] lines = new Line[N*N];
+			for (int i = 0; i < N; i++) {
+				y[i] = Integer.parseInt(inputs[i]);
+			}
 			
-			String[] x = in.readLine().split(" ");
-			String[] y = in.readLine().split(" ");
-			double E = Double.parseDouble(in.readLine());
 			
-			int cnt = 0;
+			// 인접행렬 구성
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
-					lines[cnt] = new Line(i, j);
-					lines[cnt].weight = Math.pow(Integer.parseInt(x[i]) - Integer.parseInt(x[j]), 2)
-							+ Math.pow(Integer.parseInt(y[i]) - Integer.parseInt(y[j]), 2);
-					cnt++;
+					adjMatrix[i][j] = getDistance(x[i], y[i], x[j], y[j]);
 				}
 			}
 			
-			Double answer = 0.0;
-			Arrays.sort(lines);
-			for (int i = 0; i < lines.length; i++) {
-				if (lines[i].weight == 0) continue;
-				if (union(lines[i].start, lines[i].end)) {
-					answer += lines[i].weight;
+			double E = Double.parseDouble(in.readLine());
+			System.out.println("#" + tc + " " + Math.round(makeMST() * E));
+		}
+	}
+	
+	static long getDistance(int x1, int y1, int x2, int y2) {
+		return (long) Math.pow(x1 - x2, 2) + (long) Math.pow(y1 - y2, 2);
+	}
+	
+	// Prim 알고리즘
+	static long makeMST() {
+		long[] minEdge = new long[N];
+		boolean[] visited = new boolean[N];
+		
+		Arrays.fill(minEdge, Integer.MAX_VALUE);
+		
+		// 1. 임의의 정점을 시작점으로 만듬
+		minEdge[0] = 0;
+		
+		long result = 0; // 최소 신장트리 가중치의 합
+		int cnt = 0; // 정점 개수
+		while (true) {
+			// 2. 신장 트리에 포함되지 않은 정점 중 최소 간선 비용의 정점 선택
+			long min = Integer.MAX_VALUE;
+			int minIdx = 0;
+			for (int i = 0; i < N; i++) {
+				if (visited[i]) continue;
+				if (min > minEdge[i]) {
+					minIdx = i;
+					min = minEdge[i];
 				}
 			}
-			sb.append("#").append(tc).append(" ").append(Math.round(answer * E)).append("\n");
+			
+			visited[minIdx] = true; // 신장트리에 포함
+			result += min;
+			
+			if (++cnt == N) break; // 신장트리를 완성하면 종료
+			
+			// 3. 현재 선택된 정점(minIdx)에서 MST가 아닌 다른 정점으로 가는 가중치를 업데이트
+			for (int i = 0; i < N; i++) {
+				if (visited[i]) continue;
+				if (minEdge[i] > adjMatrix[minIdx][i]) {
+					minEdge[i] = adjMatrix[minIdx][i];
+				}
+			}
 		}
-		System.out.println(sb.toString());
+		return result;
 	}
 }
+
