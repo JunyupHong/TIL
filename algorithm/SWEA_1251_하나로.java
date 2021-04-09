@@ -1,10 +1,8 @@
-package SWEA;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Solution_1251_하나로 {
+public class Solution {
 	private static int N;
 	private static long[][] adjMatrix;
 	
